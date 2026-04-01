@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#6366f1">
     <title>برنامه هفتگی</title>
-    <link rel="manifest" href="data:application/manifest+json,{}" id="manifest-placeholder">
+    <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -1242,25 +1242,6 @@
             icon.className = saved === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
         }
 
-        function generateManifest() {
-            const manifest = {
-                name: "برنامه هفتگی هوشمند",
-                short_name: "برنامه",
-                start_url: ".",
-                display: "standalone",
-                theme_color: "#6366f1",
-                background_color: "#0a0c15",
-                icons: [{
-                    src: "image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%236366f1'/%3E%3C/svg%3E",
-                    sizes: "any",
-                    type: "image/svg+xml"
-                }]
-            };
-            const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
-            const manifestURL = URL.createObjectURL(manifestBlob);
-            document.querySelector('#manifest-placeholder').setAttribute('href', manifestURL);
-        }
-
         function setupShare() {
             document.getElementById('shareBtn')?.addEventListener('click', async () => {
                 const dayNames = ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه'];
@@ -1280,6 +1261,13 @@
             });
         }
 
+        // ================ PWA Registration ================
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('Service Worker registered', reg))
+                .catch(err => console.error('SW registration failed', err));
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             createParticles();
             updateDateHeader();
@@ -1287,7 +1275,6 @@
             renderTasks();
             updateStats();
             loadTheme();
-            generateManifest();
             setupShare();
             
             document.getElementById('resetTodayBtn').addEventListener('click', resetToday);
