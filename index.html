@@ -3,142 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>برنامه‌ریز روزانه</title>
-    <!-- Vazirmatn Font -->
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.0/Vazirmatn-font-face.css" rel="stylesheet" />
+    <meta name="theme-color" content="#6366f1">
+    <title>برنامه هفتگی</title>
+    <link rel="manifest" href="data:application/manifest+json,{}" id="manifest-placeholder">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.0/Vazirmatn-font-face.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Fallback font in case Vazirmatn fails */
+        @font-face {
+            font-family: 'Vazirmatn';
+            src: local('Vazirmatn'), url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.0/fonts/webfonts/Vazirmatn-Regular.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         :root {
             --primary: #6366f1;
             --primary-dark: #4f46e5;
-            --primary-glow: rgba(99, 102, 241, 0.4);
+            --primary-glow: rgba(99, 102, 241, 0.3);
             --secondary: #ec4899;
             --success: #10b981;
             --warning: #f59e0b;
-            --danger: #ef4444;
-            --bg-primary: #0f172a;
-            --bg-secondary: #1e293b;
-            --bg-card: #334155;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --border-color: rgba(255, 255, 255, 0.1);
-            --radius: 1.5rem;
-            --radius-sm: 1rem;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --bg-primary: #0a0c15;
+            --bg-secondary: #111827;
+            --bg-card: #1f2937;
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --radius: 1.25rem;
+            --radius-sm: 0.875rem;
+            --transition: all 0.2s ease;
         }
-
         [data-theme="light"] {
-            --bg-primary: #f1f5f9;
+            --bg-primary: #f3f4f6;
             --bg-secondary: #ffffff;
-            --bg-card: #eef2ff;
-            --text-primary: #0f172a;
-            --text-secondary: #475569;
+            --bg-card: #f9fafb;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
             --border-color: rgba(0, 0, 0, 0.08);
         }
-
         body {
-            font-family: 'Vazirmatn', 'Inter', sans-serif;
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: var(--bg-primary);
-            background-image: radial-gradient(circle at 10% 20%, rgba(99,102,241,0.1) 0%, transparent 40%),
-                              radial-gradient(circle at 90% 80%, rgba(236,72,153,0.1) 0%, transparent 40%);
             min-height: 100vh;
             color: var(--text-primary);
-            padding: 1.5rem;
+            padding: 1.25rem;
             transition: var(--transition);
         }
-
         .container {
-            max-width: 1400px;
+            max-width: 1280px;
             margin: 0 auto;
         }
-
-        /* glass header */
-        .glass-header {
-            background: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(12px);
+        /* Header */
+        .header {
+            background: var(--bg-secondary);
             border-radius: var(--radius);
-            padding: 1.5rem 2rem;
-            margin-bottom: 2rem;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            transition: var(--transition);
-        }
-
-        [data-theme="light"] .glass-header {
-            background: rgba(255, 255, 255, 0.7);
-        }
-
-        .header-content {
+            padding: 1.25rem 1.75rem;
+            margin-bottom: 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 1.5rem;
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
             gap: 1rem;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
         }
-
-        .logo-icon {
-            width: 55px;
-            height: 55px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            color: white;
-            box-shadow: 0 8px 20px var(--primary-glow);
-        }
-
-        .logo-text h1 {
+        .title h1 {
             font-size: 1.6rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #fff, var(--primary));
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
-
-        .logo-text p {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-
-        .date-badge {
+        .date-box {
             text-align: left;
+            font-weight: 500;
         }
-
-        .day-name {
-            font-size: 1.6rem;
-            font-weight: 800;
+        .greg-date {
+            font-size: 1rem;
+            font-weight: 600;
             color: var(--primary);
+            direction: ltr;
         }
-
-        .full-date {
+        .weekday {
             font-size: 0.85rem;
             color: var(--text-secondary);
+            margin-top: 0.25rem;
         }
-
         .action-buttons {
             display: flex;
-            gap: 0.8rem;
+            gap: 0.75rem;
         }
-
         .icon-btn {
-            width: 45px;
-            height: 45px;
-            border-radius: 14px;
+            width: 44px;
+            height: 44px;
+            border-radius: 1rem;
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             color: var(--text-primary);
@@ -149,78 +114,12 @@
             align-items: center;
             justify-content: center;
         }
-
         .icon-btn:hover {
             background: var(--primary);
             color: white;
             transform: translateY(-2px);
         }
-
-        /* progress cards */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.2rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: var(--bg-secondary);
-            border-radius: var(--radius-sm);
-            padding: 1.2rem 1.5rem;
-            border: 1px solid var(--border-color);
-            transition: var(--transition);
-            backdrop-filter: blur(4px);
-        }
-
-        .stat-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.8rem;
-        }
-
-        .stat-title {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        .stat-icon {
-            width: 38px;
-            height: 38px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 800;
-            line-height: 1;
-        }
-
-        .progress-bar-bg {
-            height: 6px;
-            background: var(--bg-card);
-            border-radius: 10px;
-            margin-top: 0.8rem;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            width: 0%;
-            border-radius: 10px;
-            transition: width 0.8s ease-out;
-        }
-
-        /* day selector */
+        /* Day Selector */
         .day-selector {
             display: flex;
             flex-wrap: wrap;
@@ -228,37 +127,32 @@
             margin-bottom: 2rem;
             justify-content: center;
         }
-
         .day-btn {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            border-radius: 2rem;
+            border-radius: 3rem;
             padding: 0.6rem 1.2rem;
             font-family: inherit;
             font-weight: 600;
+            font-size: 0.9rem;
             color: var(--text-primary);
             cursor: pointer;
             transition: var(--transition);
-            font-size: 0.9rem;
         }
-
         .day-btn:hover {
             border-color: var(--primary);
             transform: translateY(-2px);
         }
-
         .day-btn.active {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             border-color: transparent;
             color: white;
-            box-shadow: 0 4px 12px var(--primary-glow);
+            box-shadow: 0 6px 14px var(--primary-glow);
         }
-
         .day-btn.today {
             position: relative;
             border-color: var(--success);
         }
-
         .day-btn.today::after {
             content: '';
             position: absolute;
@@ -270,16 +164,15 @@
             border-radius: 50%;
             border: 2px solid var(--bg-secondary);
         }
-
-        /* main tasks panel */
+        /* Tasks Panel */
         .tasks-panel {
             background: var(--bg-secondary);
             border-radius: var(--radius);
             border: 1px solid var(--border-color);
-            padding: 1.8rem;
-            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
         }
-
         .panel-header {
             display: flex;
             justify-content: space-between;
@@ -288,96 +181,81 @@
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
-
         .panel-title {
             display: flex;
             align-items: center;
-            gap: 0.8rem;
+            gap: 0.75rem;
         }
-
         .panel-title h2 {
-            font-size: 1.5rem;
-            font-weight: 800;
+            font-size: 1.35rem;
+            font-weight: 700;
         }
-
-        .task-badge {
-            background: rgba(99, 102, 241, 0.2);
+        .task-count {
+            background: rgba(99,102,241,0.15);
             padding: 0.3rem 0.9rem;
             border-radius: 2rem;
             font-size: 0.8rem;
             font-weight: 600;
             color: var(--primary);
         }
-
         .filter-group {
             display: flex;
             gap: 0.5rem;
         }
-
         .filter-btn {
             background: var(--bg-card);
             border: none;
-            padding: 0.5rem 1rem;
+            padding: 0.45rem 1rem;
             border-radius: 2rem;
             font-family: inherit;
             font-size: 0.8rem;
-            font-weight: 600;
+            font-weight: 500;
             color: var(--text-secondary);
             cursor: pointer;
             transition: var(--transition);
         }
-
         .filter-btn.active {
             background: var(--primary);
             color: white;
         }
-
-        /* task list */
+        /* Task List */
         .task-list {
             display: flex;
             flex-direction: column;
-            gap: 0.9rem;
+            gap: 0.85rem;
         }
-
         .task-item {
             background: var(--bg-card);
-            border-radius: var(--radius-sm);
-            padding: 1.2rem;
-            border: 2px solid transparent;
-            transition: all 0.25s ease;
+            border-radius: 1rem;
+            padding: 1rem 1.2rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
             position: relative;
         }
-
         .task-item.next-priority {
-            border-color: var(--warning);
-            background: linear-gradient(115deg, rgba(245, 158, 11, 0.1), var(--bg-card));
-            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.2);
+            border-right: 4px solid var(--warning);
+            background: linear-gradient(115deg, rgba(245,158,11,0.08), var(--bg-card));
         }
-
         .task-item.completed {
             opacity: 0.6;
         }
-
         .task-item.completed .task-title {
             text-decoration: line-through;
         }
-
         .task-content {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             gap: 1rem;
             flex-wrap: wrap;
         }
-
         .task-check {
             flex-shrink: 0;
         }
-
-        .task-check .check-box {
-            width: 28px;
-            height: 28px;
+        .check-box {
+            width: 26px;
+            height: 26px;
             background: var(--bg-secondary);
-            border-radius: 10px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -385,79 +263,115 @@
             border: 2px solid var(--border-color);
             transition: var(--transition);
         }
-
-        .task-check .check-box.checked {
+        .check-box.checked {
             background: var(--success);
             border-color: var(--success);
         }
-
-        .task-check .check-box i {
+        .check-box i {
             color: white;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             opacity: 0;
         }
-
-        .task-check .check-box.checked i {
+        .check-box.checked i {
             opacity: 1;
         }
-
         .task-info {
             flex: 1;
         }
-
         .task-title {
             font-weight: 700;
-            font-size: 1rem;
-            margin-bottom: 0.4rem;
+            font-size: 0.95rem;
+            margin-bottom: 0.3rem;
         }
-
         .task-meta {
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-
-        .task-meta span i {
-            margin-left: 0.3rem;
-            color: var(--primary);
-        }
-
-        .task-time {
-            text-align: left;
-            min-width: 110px;
-        }
-
-        .time-range {
-            font-weight: 800;
-            font-family: monospace;
-            font-size: 0.9rem;
-            color: var(--primary);
-        }
-
-        .duration {
             font-size: 0.7rem;
             color: var(--text-secondary);
         }
-
-        /* tips sidebar */
-        .tips-sidebar {
-            margin-top: 2rem;
+        .task-meta span i {
+            margin-left: 0.25rem;
+            font-size: 0.7rem;
+        }
+        .task-time-card {
             background: var(--bg-secondary);
-            border-radius: var(--radius-sm);
-            padding: 1.2rem;
+            border-radius: 1rem;
+            padding: 0.5rem 1rem;
+            text-align: center;
+            min-width: 115px;
             border: 1px solid var(--border-color);
         }
-
-        .tips-sidebar h4 {
+        .time-range {
+            font-weight: 800;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: var(--primary);
+            letter-spacing: 0.5px;
+        }
+        .duration {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            margin-top: 0.2rem;
+        }
+        /* Stats Footer */
+        .stats-footer {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            padding: 1.25rem 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .stat-item {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 0.8rem;
-            color: var(--primary);
+            gap: 1rem;
+            background: var(--bg-card);
+            border-radius: 1rem;
+            padding: 0.9rem 1rem;
+            transition: var(--transition);
         }
-
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: white;
+        }
+        .stat-info {
+            flex: 1;
+        }
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.3px;
+        }
+        .progress-bar-bg {
+            height: 5px;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            margin-top: 0.6rem;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
         .notification {
             position: fixed;
             bottom: 2rem;
@@ -465,63 +379,50 @@
             transform: translateX(-50%) translateY(100px);
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            padding: 0.8rem 1.8rem;
+            padding: 0.7rem 1.6rem;
             border-radius: 3rem;
-            font-weight: 600;
+            font-weight: 500;
             z-index: 1000;
             transition: transform 0.3s ease;
             display: flex;
             align-items: center;
             gap: 0.6rem;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            font-size: 0.85rem;
         }
-
         .notification.show {
             transform: translateX(-50%) translateY(0);
         }
-
         .empty-state {
             text-align: center;
-            padding: 3rem;
+            padding: 2.5rem;
             color: var(--text-secondary);
         }
-
-        @media (max-width: 700px) {
-            body { padding: 1rem; }
-            .task-content { flex-direction: column; }
-            .task-time { text-align: right; }
+        @media (max-width: 640px) {
+            body { padding: 0.9rem; }
+            .header { flex-direction: column; text-align: center; }
+            .date-box { text-align: center; }
+            .task-content { flex-direction: column; align-items: flex-start; }
+            .task-time-card { align-self: flex-start; }
+            .stat-item { padding: 0.7rem; }
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <!-- Glass Header -->
-    <div class="glass-header">
-        <div class="header-content">
-            <div class="logo-area">
-                <div class="logo-icon"><i class="fas fa-calendar-check"></i></div>
-                <div class="logo-text">
-                    <h1>نظام البرمجة الذكي</h1>
-                    <p>مدیریت هوشمند برنامه هفتگی</p>
-                </div>
-            </div>
-            <div class="date-badge">
-                <div class="day-name" id="currentDayName">-</div>
-                <div class="full-date" id="currentFullDate">-</div>
-            </div>
-            <div class="action-buttons">
-                <button class="icon-btn" id="themeToggle"><i class="fas fa-moon"></i></button>
-                <button class="icon-btn" id="resetTodayBtn"><i class="fas fa-redo-alt"></i></button>
-            </div>
+    <!-- Header -->
+    <div class="header">
+        <div class="title">
+            <h1>برنامه هفتگی</h1>
         </div>
-    </div>
-
-    <!-- Stats Grid -->
-    <div class="stats-grid">
-        <div class="stat-card"><div class="stat-header"><div class="stat-title"><div class="stat-icon"><i class="fas fa-tasks"></i></div><span>کل وظایف</span></div><div class="stat-number" id="totalTasks">0</div></div><div class="progress-bar-bg"><div class="progress-fill" id="totalFill" style="width:0%"></div></div></div>
-        <div class="stat-card"><div class="stat-header"><div class="stat-title"><div class="stat-icon"><i class="fas fa-check-circle"></i></div><span>انجام شده</span></div><div class="stat-number" id="completedTasks">0</div></div><div class="progress-bar-bg"><div class="progress-fill" id="completedFill" style="width:0%"></div></div></div>
-        <div class="stat-card"><div class="stat-header"><div class="stat-title"><div class="stat-icon"><i class="fas fa-hourglass-half"></i></div><span>ساعت برنامه</span></div><div class="stat-number" id="totalHours">0</div></div><div class="progress-bar-bg"><div class="progress-fill" id="hoursFill" style="width:0%"></div></div></div>
-        <div class="stat-card"><div class="stat-header"><div class="stat-title"><div class="stat-icon"><i class="fas fa-chart-line"></i></div><span>پیشرفت</span></div><div class="stat-number" id="progressPercent">0%</div></div><div class="progress-bar-bg"><div class="progress-fill" id="percentFill" style="width:0%"></div></div></div>
+        <div class="date-box">
+            <div class="greg-date" id="gregDate"></div>
+            <div class="weekday" id="weekdayName"></div>
+        </div>
+        <div class="action-buttons">
+            <button class="icon-btn" id="themeToggle"><i class="fas fa-moon"></i></button>
+            <button class="icon-btn" id="resetTodayBtn"><i class="fas fa-redo-alt"></i></button>
+        </div>
     </div>
 
     <!-- Day Selector -->
@@ -530,35 +431,69 @@
     <!-- Tasks Panel -->
     <div class="tasks-panel">
         <div class="panel-header">
-            <div class="panel-title"><h2><i class="fas fa-list-ul"></i> برنامه امروز</h2><span class="task-badge" id="taskCount">۰ کار</span></div>
-            <div class="filter-group"><button class="filter-btn active" data-filter="all">همه</button><button class="filter-btn" data-filter="pending">جاری</button><button class="filter-btn" data-filter="completed">انجام‌شده</button></div>
+            <div class="panel-title">
+                <h2><i class="fas fa-list-check"></i> برنامه روز</h2>
+                <span class="task-count" id="taskCount">۰ کار</span>
+            </div>
+            <div class="filter-group">
+                <button class="filter-btn active" data-filter="all">همه</button>
+                <button class="filter-btn" data-filter="pending">جاری</button>
+                <button class="filter-btn" data-filter="completed">انجام‌شده</button>
+            </div>
         </div>
         <div id="taskListContainer" class="task-list"></div>
     </div>
 
-    <!-- Tips Sidebar -->
-    <div class="tips-sidebar">
-        <h4><i class="fas fa-brain"></i> تکنیک مراجعت ۱۰-۱۰-۳۰</h4>
-        <p>🎯 <strong>۳۰ دقیقه</strong> دروس اصلی حقوق &nbsp;|&nbsp; <strong>۱۰ دقیقه</strong> واژگان عربی و ترکی &nbsp;|&nbsp; <strong>۱۰ دقیقه</strong> مرور علوم شرعی همان روز<br>
-        ✨ بدون خستگی، بازدهی فوق‌العاده.</p>
-        <p style="margin-top:0.8rem"><i class="fas fa-mosque"></i> اولویت با نماز جماعت و کلاس‌های زنده.</p>
+    <!-- Stats Footer -->
+    <div class="stats-footer" id="statsFooter">
+        <div class="stat-item">
+            <div class="stat-icon"><i class="fas fa-tasks"></i></div>
+            <div class="stat-info">
+                <div class="stat-value" id="totalTasks">0</div>
+                <div class="stat-label">کل وظایف</div>
+                <div class="progress-bar-bg"><div class="progress-fill" id="totalFill"></div></div>
+            </div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+            <div class="stat-info">
+                <div class="stat-value" id="completedTasks">0</div>
+                <div class="stat-label">انجام شده</div>
+                <div class="progress-bar-bg"><div class="progress-fill" id="completedFill"></div></div>
+            </div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-icon"><i class="fas fa-hourglass-half"></i></div>
+            <div class="stat-info">
+                <div class="stat-value" id="totalHours">0</div>
+                <div class="stat-label">ساعت برنامه</div>
+                <div class="progress-bar-bg"><div class="progress-fill" id="hoursFill"></div></div>
+            </div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+            <div class="stat-info">
+                <div class="stat-value" id="progressPercent">0%</div>
+                <div class="stat-label">پیشرفت</div>
+                <div class="progress-bar-bg"><div class="progress-fill" id="percentFill"></div></div>
+            </div>
+        </div>
     </div>
 </div>
 <div id="notification" class="notification"><i class="fas fa-check-circle"></i><span></span></div>
 
 <script>
-    // ======================== SCHEDULE DATA (بر اساس برنامه جدید کاربر) ========================
-    // تابع کمکی برای ساخت آیتم تسک
-    function makeTask(id, title, start, end, category, location, desc=''){
-        return { id, title, start, end, category, location, desc, duration: getDuration(start,end) };
+    // ======================== SCHEDULE DATA (مطابق برنامه ارائه شده) ========================
+    function makeTask(id, title, start, end, category, location, desc = '') {
+        return { id, title, start, end, category, location, desc, duration: getDuration(start, end) };
     }
-    function getDuration(start,end){
-        let [sh,sm]=start.split(':').map(Number);
-        let [eh,em]=end.split(':').map(Number);
-        let diff = (eh*60+em) - (sh*60+sm);
-        let h=Math.floor(diff/60), m=diff%60;
-        if(h>0 && m>0) return `${h}ساعت ${m}دقیقه`;
-        if(h>0) return `${h}ساعت`;
+    function getDuration(start, end) {
+        let [sh, sm] = start.split(':').map(Number);
+        let [eh, em] = end.split(':').map(Number);
+        let diff = (eh * 60 + em) - (sh * 60 + sm);
+        let h = Math.floor(diff / 60), m = diff % 60;
+        if (h > 0 && m > 0) return `${h}ساعت ${m}دقیقه`;
+        if (h > 0) return `${h}ساعت`;
         return `${m}دقیقه`;
     }
 
@@ -566,14 +501,14 @@
 
     // شنبه (6)
     scheduleDB[6] = [
-        makeTask(1, 'نماز صبح (جماعت)', '04:50', '05:40', 'عبادی', 'مسجد', 'بیداری و حضور در مسجد'),
+        makeTask(1, 'نماز صبح (جماعت)', '04:50', '05:40', 'عبادی', 'مسجد', 'بیداری و حضور'),
         makeTask(2, 'حفظ و مراجعه قرآن', '05:40', '06:30', 'عبادی', 'سحر', 'تمرکز بالا در سحر'),
-        makeTask(3, 'علوم شریعت ۱ (نحو)', '06:30', '07:10', 'درسی', 'واحد', '۴۰ دقیقه درس ضبط شده'),
+        makeTask(3, 'علوم شریعت ۱ (نحو)', '06:30', '07:10', 'درسی', 'واحد', 'درس ضبط شده'),
         makeTask(4, 'صبحانه + ورزش سبک', '07:10', '08:00', 'شخصی', 'سلف', ''),
-        makeTask(5, 'مطالعه آزاد', '08:00', '09:00', 'درسی', '-', 'مطالعه غیر درسی'),
-        makeTask(6, 'وقت طلایی یوتیوب', '09:00', '11:30', 'محتوا', 'یوتیوب', 'ضبط تلاوتها و ادیت حرفه‌ای'),
+        makeTask(5, 'مطالعه آزاد', '08:00', '09:00', 'درسی', '-', 'غیر درسی'),
+        makeTask(6, 'وقت طلایی یوتیوب', '09:00', '11:30', 'محتوا', 'یوتیوب', 'ضبط و ادیت'),
         makeTask(7, 'درس قرائت در مسجد', '12:30', '13:30', 'عبادی', 'مسجد', 'بعد از نماز ظهر'),
-        makeTask(8, 'واحد ۲ شریعت + تکرار دروس هفته + استراحت', '14:00', '18:30', 'درسی', '-', ''),
+        makeTask(8, 'واحد ۲ شریعت + تکرار دروس + استراحت', '14:00', '18:30', 'درسی', '-', ''),
         makeTask(9, 'کلاس عربی آنلاین', '18:30', '19:30', 'درسی', 'آنلاین', ''),
         makeTask(10, 'تکرار دروس و آماده‌سازی هفته جدید', '20:00', '22:00', 'درسی', '-', 'شب')
     ];
@@ -585,19 +520,19 @@
         makeTask(3, 'شریعت ۱ (سیرت)', '06:30', '07:10', 'درسی', 'واحد', ''),
         makeTask(4, 'صبحانه + ورزش سبک', '07:10', '08:00', 'شخصی', 'سلف', ''),
         makeTask(5, 'مطالعه آزاد', '08:00', '09:00', 'درسی', '-', ''),
-        makeTask(6, 'مرور عمیق مطالب روز قبل (حقوق)', '09:00', '10:30', 'درسی', '-', ''),
-        makeTask(7, 'ضبط محتوای کانال دوم (ایده‌های عربی)', '10:30', '11:30', 'محتوا', 'یوتیوب', ''),
+        makeTask(6, 'مرور عمیق حقوق', '09:00', '10:30', 'درسی', '-', ''),
+        makeTask(7, 'ضبط محتوای کانال دوم', '10:30', '11:30', 'محتوا', 'یوتیوب', ''),
         makeTask(8, 'نماز ظهر (جماعت)', '11:30', '12:30', 'عبادی', 'مسجد', ''),
-        makeTask(9, 'ناهار (نان چاشت)', '12:30', '13:15', 'شخصی', 'سلف', ''),
+        makeTask(9, 'ناهار', '12:30', '13:15', 'شخصی', 'سلف', ''),
         makeTask(10, 'شریعت ۲ (حدیث)', '13:15', '14:00', 'درسی', 'واحد', ''),
-        makeTask(11, 'خواب قیلوله / استراحت', '14:00', '15:00', 'شخصی', '-', 'بازسازی انرژی'),
+        makeTask(11, 'خواب قیلوله', '14:00', '15:00', 'شخصی', '-', ''),
         makeTask(12, 'نماز عصر (جماعت)', '15:00', '15:30', 'عبادی', 'مسجد', ''),
         makeTask(13, 'کلاس منهجیة البحث', '15:10', '17:20', 'درسی', 'دانشگاه', ''),
-        makeTask(14, 'نماز مغرب + تفریح و قدم زدن', '17:20', '18:30', 'عبادی', 'محوطه خوابگاه', ''),
+        makeTask(14, 'نماز مغرب + تفریح', '17:20', '18:30', 'عبادی', 'خوابگاه', ''),
         makeTask(15, 'درس عربی آنلاین', '18:30', '19:30', 'درسی', 'آنلاین', ''),
         makeTask(16, 'نماز عشاء + شام', '19:30', '21:00', 'عبادی', 'سلف', ''),
         makeTask(17, 'شریعت ۳ (فقه)', '21:00', '21:40', 'درسی', 'واحد', ''),
-        makeTask(18, 'تکرار دروس و ادیت ویدیوها', '21:40', '22:40', 'درسی', '-', ''),
+        makeTask(18, 'تکرار دروس و ادیت', '21:40', '22:40', 'درسی', '-', ''),
         makeTask(19, 'مطالعه آزاد', '22:40', '23:15', 'درسی', '-', '')
     ];
 
@@ -621,29 +556,29 @@
         makeTask(16, 'غذای شب', '19:50', '20:30', 'شخصی', 'سلف', ''),
         makeTask(17, 'شریعت ۳ (عقیده)', '20:30', '21:10', 'درسی', 'واحد', ''),
         makeTask(18, 'مسواک', '21:10', '21:20', 'شخصی', '-', ''),
-        makeTask(19, 'استراحت', '21:30', '04:20', 'شخصی', '-', 'خواب شب')
+        makeTask(19, 'استراحت', '21:30', '04:20', 'شخصی', '-', 'خواب')
     ];
 
     // سه‌شنبه (2)
     scheduleDB[2] = [
         makeTask(1, 'نماز صبح (جماعت)', '04:50', '05:40', 'عبادی', 'مسجد', ''),
-        makeTask(2, 'حفظ و مراجعه قرآن', '05:40', '06:30', 'عبادی', 'سحر', 'تمرکز بالا در سحر'),
+        makeTask(2, 'حفظ و مراجعه قرآن', '05:40', '06:30', 'عبادی', 'سحر', ''),
         makeTask(3, 'شریعت ۱ (تربیت اسلامی)', '06:30', '07:10', 'درسی', 'واحد', ''),
         makeTask(4, 'صبحانه + ورزش سبک', '07:10', '08:00', 'شخصی', 'سلف', ''),
         makeTask(5, 'مطالعه آزاد', '08:00', '09:00', 'درسی', '-', ''),
-        makeTask(6, 'مرور عمیق مطالب روز قبل (حقوق)', '09:00', '10:30', 'درسی', '-', ''),
-        makeTask(7, 'ضبط محتوای کانال دوم (ایده‌های عربی)', '10:30', '11:30', 'محتوا', 'یوتیوب', ''),
+        makeTask(6, 'مرور عمیق حقوق', '09:00', '10:30', 'درسی', '-', ''),
+        makeTask(7, 'ضبط محتوای کانال دوم', '10:30', '11:30', 'محتوا', 'یوتیوب', ''),
         makeTask(8, 'نماز ظهر (جماعت)', '11:30', '12:30', 'عبادی', 'مسجد', ''),
         makeTask(9, 'ناهار', '12:30', '13:15', 'شخصی', 'سلف', ''),
         makeTask(10, 'شریعت ۲ (حدیث)', '13:15', '14:00', 'درسی', 'واحد', ''),
-        makeTask(11, 'خواب قیلوله / استراحت', '14:00', '15:00', 'شخصی', '-', ''),
+        makeTask(11, 'خواب قیلوله', '14:00', '15:00', 'شخصی', '-', ''),
         makeTask(12, 'نماز عصر (جماعت)', '15:00', '15:30', 'عبادی', 'مسجد', ''),
         makeTask(13, 'کلاس منهجیة البحث', '15:10', '17:20', 'درسی', 'دانشگاه', ''),
-        makeTask(14, 'نماز مغرب + تفریح و قدم زدن', '17:20', '18:30', 'عبادی', 'محوطه خوابگاه', ''),
+        makeTask(14, 'نماز مغرب + تفریح', '17:20', '18:30', 'عبادی', 'خوابگاه', ''),
         makeTask(15, 'درس عربی آنلاین', '18:30', '19:30', 'درسی', 'آنلاین', ''),
         makeTask(16, 'نماز عشاء + شام', '19:30', '21:00', 'عبادی', 'سلف', ''),
         makeTask(17, 'شریعت ۳ (فقه)', '21:00', '21:40', 'درسی', 'واحد', ''),
-        makeTask(18, 'تکرار دروس و ادیت ویدیوها', '21:40', '22:40', 'درسی', '-', ''),
+        makeTask(18, 'تکرار دروس و ادیت', '21:40', '22:40', 'درسی', '-', ''),
         makeTask(19, 'مطالعه آزاد', '22:40', '23:15', 'درسی', '-', '')
     ];
 
@@ -672,7 +607,7 @@
 
     // پنجشنبه (4)
     scheduleDB[4] = [
-        makeTask(1, 'ادیت و انتشار ویدیوهای اینستاگرام و یوتیوب', '09:00', '11:00', 'محتوا', '-', ''),
+        makeTask(1, 'ادیت و انتشار ویدیوها', '09:00', '11:00', 'محتوا', '-', 'یوتیوب/اینستاگرام'),
         makeTask(2, 'شریعت ۱ (تفسیر)', '11:00', '12:00', 'درسی', 'واحد', ''),
         makeTask(3, 'نماز ظهر و ناهار سریع', '12:00', '13:00', 'عبادی', 'مسجد/سلف', ''),
         makeTask(4, 'کلاس قانون تامین', '13:40', '17:20', 'درسی', 'دانشگاه', ''),
@@ -683,12 +618,12 @@
     // جمعه (5)
     scheduleDB[5] = [
         makeTask(1, 'نماز صبح + حفظ قرآن', '04:50', '06:00', 'عبادی', 'مسجد/سحر', 'سپس استراحت تا ۸:۳۰'),
-        makeTask(2, 'ورزش سنگین‌تر یا تفریح خارج از خوابگاه', '09:00', '10:30', 'شخصی', 'خارج', ''),
+        makeTask(2, 'ورزش سنگین‌تر یا تفریح خارج', '09:00', '10:30', 'شخصی', 'خارج', ''),
         makeTask(3, 'غسل جمعه و مطالعه آزاد', '10:30', '11:30', 'عبادی', '-', 'کتب غیر درسی'),
         makeTask(4, 'نماز جمعه و ناهار', '11:30', '13:30', 'عبادی', 'مسجد/سلف', ''),
         makeTask(5, 'استراحت و خواب ظهر', '14:00', '17:00', 'شخصی', '-', ''),
-        makeTask(6, 'تفریح و ارتباطات (خانواده و دوستان)', '17:00', '20:00', 'شخصی', '-', ''),
-        makeTask(7, 'جمع‌بندی نهایی هفته و چیدمان برنامه هفته بعد', '20:00', '22:00', 'درسی', '-', '')
+        makeTask(6, 'تفریح و ارتباطات', '17:00', '20:00', 'شخصی', '-', 'خانواده و دوستان'),
+        makeTask(7, 'جمع‌بندی هفته و چیدمان هفته بعد', '20:00', '22:00', 'درسی', '-', 'برنامه‌ریزی')
     ];
 
     // ======================== STATE ========================
@@ -700,36 +635,36 @@
     function isCompleted(day, taskId) { return completedMap[getDayKey(day)]?.includes(taskId) || false; }
     function setCompleted(day, taskId, completed) {
         let key = getDayKey(day);
-        if(!completedMap[key]) completedMap[key]=[];
-        if(completed && !completedMap[key].includes(taskId)) completedMap[key].push(taskId);
-        else if(!completed && completedMap[key].includes(taskId)) completedMap[key]=completedMap[key].filter(id=>id!==taskId);
+        if (!completedMap[key]) completedMap[key] = [];
+        if (completed && !completedMap[key].includes(taskId)) completedMap[key].push(taskId);
+        else if (!completed && completedMap[key].includes(taskId)) completedMap[key] = completedMap[key].filter(id => id !== taskId);
         localStorage.setItem('smartProgress', JSON.stringify(completedMap));
     }
 
-    function getTasksForDay(day){
+    function getTasksForDay(day) {
         let tasks = scheduleDB[day] || [];
-        return tasks.map(t=> ({...t, completed: isCompleted(day, t.id)}));
+        return tasks.map(t => ({ ...t, completed: isCompleted(day, t.id) }));
     }
 
-    function getNextPendingTask(tasks){
-        return tasks.find(t=>!t.completed);
+    function getNextPendingTask(tasks) {
+        return tasks.find(t => !t.completed);
     }
 
-    function renderTasks(){
+    function renderTasks() {
         let tasks = getTasksForDay(currentDay);
         let filtered = tasks;
-        if(currentFilter === 'completed') filtered = tasks.filter(t=>t.completed);
-        else if(currentFilter === 'pending') filtered = tasks.filter(t=>!t.completed);
-        
+        if (currentFilter === 'completed') filtered = tasks.filter(t => t.completed);
+        else if (currentFilter === 'pending') filtered = tasks.filter(t => !t.completed);
+
         let container = document.getElementById('taskListContainer');
-        if(!filtered.length){
-            container.innerHTML = `<div class="empty-state"><i class="fas fa-calendar-week"></i><h3>برنامه‌ای یافت نشد</h3><p>فیلتر یا روز را تغییر دهید</p></div>`;
+        if (!filtered.length) {
+            container.innerHTML = `<div class="empty-state"><i class="fas fa-calendar-week fa-2x"></i><h3 style="margin-top:0.8rem">هیچ کاری یافت نشد</h3></div>`;
             document.getElementById('taskCount').innerText = '۰ کار';
             return;
         }
         let nextId = getNextPendingTask(tasks)?.id;
         let html = '';
-        filtered.forEach(task=>{
+        filtered.forEach(task => {
             let isNext = (!task.completed && task.id === nextId);
             let completedClass = task.completed ? 'completed' : '';
             let priorityClass = isNext ? 'next-priority' : '';
@@ -739,25 +674,31 @@
                         <div class="task-check"><div class="check-box ${task.completed ? 'checked' : ''}" data-id="${task.id}"><i class="fas fa-check"></i></div></div>
                         <div class="task-info">
                             <div class="task-title">${task.title}</div>
-                            <div class="task-meta"><span><i class="fas fa-tag"></i> ${task.category}</span><span><i class="fas fa-map-marker-alt"></i> ${task.location}</span>${task.desc ? `<span><i class="fas fa-info-circle"></i> ${task.desc}</span>`:''}</div>
+                            <div class="task-meta">
+                                <span><i class="fas fa-tag"></i> ${task.category}</span>
+                                <span><i class="fas fa-map-marker-alt"></i> ${task.location}</span>
+                                ${task.desc ? `<span><i class="fas fa-info-circle"></i> ${task.desc}</span>` : ''}
+                            </div>
                         </div>
-                        <div class="task-time"><div class="time-range">${task.start} - ${task.end}</div><div class="duration">${task.duration}</div></div>
+                        <div class="task-time-card">
+                            <div class="time-range">${task.start} - ${task.end}</div>
+                            <div class="duration">${task.duration}</div>
+                        </div>
                     </div>
                 </div>
             `;
         });
         container.innerHTML = html;
         document.getElementById('taskCount').innerText = filtered.length + ' کار';
-        // attach checkbox events
-        document.querySelectorAll('.check-box').forEach(box=>{
-            box.addEventListener('click',(e)=>{
+        document.querySelectorAll('.check-box').forEach(box => {
+            box.addEventListener('click', (e) => {
                 let taskId = parseInt(box.dataset.id);
                 let tasksNow = getTasksForDay(currentDay);
-                let targetTask = tasksNow.find(t=>t.id===taskId);
-                if(targetTask){
-                    let newStatus = !targetTask.completed;
+                let target = tasksNow.find(t => t.id === taskId);
+                if (target) {
+                    let newStatus = !target.completed;
                     setCompleted(currentDay, taskId, newStatus);
-                    showNotif(newStatus ? '✅ کار انجام شد!' : '🔄 کار به حالت قبل برگشت', newStatus ? 'success' : 'info');
+                    showNotif(newStatus ? '✅ انجام شد!' : '🔄 برگشت داده شد', newStatus ? 'success' : 'info');
                     renderTasks();
                     updateStats();
                 }
@@ -765,120 +706,180 @@
         });
     }
 
-    function updateStats(){
+    function updateStats() {
         let tasks = getTasksForDay(currentDay);
         let total = tasks.length;
-        let completed = tasks.filter(t=>t.completed).length;
-        let percent = total ? Math.round((completed/total)*100) : 0;
+        let completed = tasks.filter(t => t.completed).length;
+        let percent = total ? Math.round((completed / total) * 100) : 0;
         let totalMinutes = 0;
-        tasks.forEach(t=>{
-            let [sh,sm]=t.start.split(':').map(Number);
-            let [eh,em]=t.end.split(':').map(Number);
-            totalMinutes += (eh*60+em) - (sh*60+sm);
+        tasks.forEach(t => {
+            let [sh, sm] = t.start.split(':').map(Number);
+            let [eh, em] = t.end.split(':').map(Number);
+            totalMinutes += (eh * 60 + em) - (sh * 60 + sm);
         });
-        let totalHours = (totalMinutes/60).toFixed(1);
+        let totalHours = (totalMinutes / 60).toFixed(1);
         document.getElementById('totalTasks').innerText = total;
         document.getElementById('completedTasks').innerText = completed;
         document.getElementById('totalHours').innerText = totalHours;
-        document.getElementById('progressPercent').innerText = percent+'%';
-        document.getElementById('completedFill').style.width = percent+'%';
+        document.getElementById('progressPercent').innerText = percent + '%';
+        document.getElementById('completedFill').style.width = percent + '%';
         document.getElementById('totalFill').style.width = '100%';
-        document.getElementById('hoursFill').style.width = Math.min(percent*1.2,100)+'%';
-        document.getElementById('percentFill').style.width = percent+'%';
+        document.getElementById('hoursFill').style.width = Math.min(percent * 1.2, 100) + '%';
+        document.getElementById('percentFill').style.width = percent + '%';
     }
 
-    function updateDateDisplay(){
-        let now = new Date();
-        let dayNames = ['یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنج‌شنبه','جمعه','شنبه'];
-        let persianDay = now.getDay();
-        document.getElementById('currentDayName').innerHTML = dayNames[persianDay];
-        document.getElementById('currentFullDate').innerHTML = now.toLocaleDateString('fa-IR', { year:'numeric', month:'long', day:'numeric' });
-        document.querySelectorAll('.day-btn').forEach(btn=>{
-            btn.classList.remove('today');
-            if(parseInt(btn.dataset.day)===persianDay) btn.classList.add('today');
-        });
+    function updateDateHeader() {
+        const now = new Date();
+        const dayNames = ['یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه', 'شنبه'];
+        const weekday = dayNames[now.getDay()];
+        document.getElementById('weekdayName').innerText = weekday;
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('gregDate').innerText = now.toLocaleDateString('en-US', options);
     }
 
-    function buildDaySelector(){
-        let days = ['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنج‌شنبه','جمعه'];
-        let container = document.getElementById('daySelector');
+    function buildDaySelector() {
+        const days = ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه'];
+        const order = [6, 0, 1, 2, 3, 4, 5];
+        const container = document.getElementById('daySelector');
         container.innerHTML = '';
-        // mapping: day index 6->شنبه, 0->یکشنبه, 1->دوشنبه, 2->سه‌شنبه, 3->چهارشنبه, 4->پنج‌شنبه, 5->جمعه
-        let order = [6,0,1,2,3,4,5];
-        for(let i=0; i<order.length; i++){
-            let dayIdx = order[i];
-            let name = days[i];
-            let btn = document.createElement('button');
+        order.forEach((dayIdx, idx) => {
+            const btn = document.createElement('button');
             btn.className = 'day-btn';
-            if(currentDay === dayIdx) btn.classList.add('active');
-            btn.innerText = name;
+            if (currentDay === dayIdx) btn.classList.add('active');
+            btn.innerText = days[idx];
             btn.dataset.day = dayIdx;
-            btn.addEventListener('click',()=>{
+            btn.addEventListener('click', () => {
                 currentDay = dayIdx;
-                document.querySelectorAll('.day-btn').forEach(b=>b.classList.remove('active'));
+                document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 renderTasks();
                 updateStats();
             });
             container.appendChild(btn);
-        }
-        updateDateDisplay();
+        });
+        const todayIdx = new Date().getDay();
+        const todayBtn = document.querySelector(`.day-btn[data-day="${todayIdx}"]`);
+        if (todayBtn) todayBtn.classList.add('today');
     }
 
-    function showNotif(msg, type='success'){
-        let notif = document.getElementById('notification');
+    function showNotif(msg) {
+        const notif = document.getElementById('notification');
         notif.querySelector('span').innerText = msg;
         notif.classList.add('show');
-        setTimeout(()=>notif.classList.remove('show'), 2200);
+        setTimeout(() => notif.classList.remove('show'), 2000);
     }
 
-    function resetToday(){
-        if(confirm('بازنشانی تمام کارهای امروز؟')){
-            let key = getDayKey(currentDay);
+    function resetToday() {
+        if (confirm('بازنشانی تمام کارهای امروز؟')) {
+            const key = getDayKey(currentDay);
             completedMap[key] = [];
             localStorage.setItem('smartProgress', JSON.stringify(completedMap));
             renderTasks();
             updateStats();
-            showNotif('امروز بازنشانی شد','info');
+            showNotif('امروز بازنشانی شد');
         }
     }
 
-    function toggleTheme(){
-        let html = document.documentElement;
-        let current = html.getAttribute('data-theme');
-        let newTheme = current === 'light' ? 'dark' : 'light';
+    function toggleTheme() {
+        const html = document.documentElement;
+        const current = html.getAttribute('data-theme');
+        const newTheme = current === 'light' ? 'dark' : 'light';
         html.setAttribute('data-theme', newTheme);
         localStorage.setItem('theme', newTheme);
-        let icon = document.querySelector('#themeToggle i');
+        const icon = document.querySelector('#themeToggle i');
         icon.className = newTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
     }
 
-    function loadTheme(){
-        let saved = localStorage.getItem('theme') || 'dark';
+    function loadTheme() {
+        const saved = localStorage.getItem('theme') || 'dark';
         document.documentElement.setAttribute('data-theme', saved);
-        let icon = document.querySelector('#themeToggle i');
+        const icon = document.querySelector('#themeToggle i');
         icon.className = saved === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
     }
 
-    document.addEventListener('DOMContentLoaded',()=>{
+    // PWA Manifest and Service Worker
+    function generateManifest() {
+        const manifest = {
+            name: "برنامه هفتگی",
+            short_name: "برنامه",
+            start_url: ".",
+            display: "standalone",
+            theme_color: "#6366f1",
+            background_color: "#0a0c15",
+            icons: [
+                {
+                    src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%236366f1'/%3E%3Ctext x='50' y='67' font-size='50' text-anchor='middle' fill='white' font-family='monospace'%3E📅%3C/text%3E%3C/svg%3E",
+                    sizes: "any",
+                    type: "image/svg+xml",
+                    purpose: "any maskable"
+                }
+            ]
+        };
+        const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
+        const manifestURL = URL.createObjectURL(manifestBlob);
+        document.querySelector('#manifest-placeholder').setAttribute('href', manifestURL);
+    }
+
+    function registerServiceWorker() {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW registration failed:', err));
+        }
+    }
+
+    // Inline service worker script (will be written dynamically)
+    function installServiceWorker() {
+        const swCode = `
+            const CACHE_NAME = 'weekly-planner-v1';
+            const urlsToCache = [
+                './',
+                '${window.location.pathname}',
+                'https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.0/Vazirmatn-font-face.css',
+                'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
+                'https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.0/fonts/webfonts/Vazirmatn-Regular.woff2'
+            ];
+            self.addEventListener('install', event => {
+                event.waitUntil(
+                    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+                );
+            });
+            self.addEventListener('fetch', event => {
+                event.respondWith(
+                    caches.match(event.request).then(response => response || fetch(event.request))
+                );
+            });
+            self.addEventListener('activate', event => {
+                event.waitUntil(
+                    caches.keys().then(keys => Promise.all(
+                        keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
+                    ))
+                );
+            });
+        `;
+        const blob = new Blob([swCode], {type: 'application/javascript'});
+        const url = URL.createObjectURL(blob);
+        navigator.serviceWorker.register(url).catch(console.log);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        updateDateHeader();
         buildDaySelector();
         renderTasks();
         updateStats();
         loadTheme();
-        document.getElementById('resetTodayBtn').addEventListener('click',resetToday);
-        document.getElementById('themeToggle').addEventListener('click',toggleTheme);
-        document.querySelectorAll('.filter-btn').forEach(btn=>{
-            btn.addEventListener('click',()=>{
-                document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+        document.getElementById('resetTodayBtn').addEventListener('click', resetToday);
+        document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 currentFilter = btn.dataset.filter;
                 renderTasks();
             });
         });
-        // highlight today
-        let todayIdx = new Date().getDay();
-        let todayBtn = document.querySelector(`.day-btn[data-day="${todayIdx}"]`);
-        if(todayBtn) todayBtn.classList.add('today');
+        generateManifest();
+        if ('serviceWorker' in navigator) {
+            installServiceWorker();
+        }
     });
 </script>
 </body>
