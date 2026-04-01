@@ -6,17 +6,10 @@
     <meta name="theme-color" content="#6366f1">
     <title>برنامه هفتگی</title>
     <link rel="manifest" href="data:application/manifest+json,{}" id="manifest-placeholder">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.0/Vazirmatn-font-face.css">
+    <!-- Google Fonts: Vazirmatn + Amiri (fallback) -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Fallback font in case Vazirmatn fails */
-        @font-face {
-            font-family: 'Vazirmatn';
-            src: local('Vazirmatn'), url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.0/fonts/webfonts/Vazirmatn-Regular.woff2') format('woff2');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-        }
         * {
             margin: 0;
             padding: 0;
@@ -48,7 +41,7 @@
             --border-color: rgba(0, 0, 0, 0.08);
         }
         body {
-            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Vazirmatn', 'Amiri', 'Segoe UI', system-ui, sans-serif;
             background: var(--bg-primary);
             min-height: 100vh;
             color: var(--text-primary);
@@ -89,12 +82,6 @@
             font-size: 1rem;
             font-weight: 600;
             color: var(--primary);
-            direction: ltr;
-        }
-        .weekday {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-top: 0.25rem;
         }
         .action-buttons {
             display: flex;
@@ -222,14 +209,14 @@
         .task-list {
             display: flex;
             flex-direction: column;
-            gap: 0.85rem;
+            gap: 1rem;
         }
         .task-item {
             background: var(--bg-card);
-            border-radius: 1rem;
-            padding: 1rem 1.2rem;
+            border-radius: 1.25rem;
+            padding: 1.2rem;
             border: 1px solid var(--border-color);
-            transition: all 0.2s;
+            transition: var(--transition);
             position: relative;
         }
         .task-item.next-priority {
@@ -237,92 +224,99 @@
             background: linear-gradient(115deg, rgba(245,158,11,0.08), var(--bg-card));
         }
         .task-item.completed {
-            opacity: 0.6;
+            opacity: 0.7;
         }
         .task-item.completed .task-title {
             text-decoration: line-through;
         }
-        .task-content {
+        /* Centered task info */
+        .task-info-grid {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-        .task-check {
-            flex-shrink: 0;
-        }
-        .check-box {
-            width: 26px;
-            height: 26px;
-            background: var(--bg-secondary);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 2px solid var(--border-color);
-            transition: var(--transition);
-        }
-        .check-box.checked {
-            background: var(--success);
-            border-color: var(--success);
-        }
-        .check-box i {
-            color: white;
-            font-size: 0.75rem;
-            opacity: 0;
-        }
-        .check-box.checked i {
-            opacity: 1;
-        }
-        .task-info {
-            flex: 1;
+            text-align: center;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
         }
         .task-title {
-            font-weight: 700;
-            font-size: 0.95rem;
-            margin-bottom: 0.3rem;
+            font-weight: 800;
+            font-size: 1.2rem;
+            margin-bottom: 0.2rem;
         }
-        .task-meta {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-        }
-        .task-meta span i {
-            margin-left: 0.25rem;
-            font-size: 0.7rem;
-        }
-        .task-time-card {
+        /* Time display larger */
+        .time-display {
             background: var(--bg-secondary);
-            border-radius: 1rem;
-            padding: 0.5rem 1rem;
-            text-align: center;
-            min-width: 115px;
+            border-radius: 2rem;
+            padding: 0.5rem 1.2rem;
+            display: inline-block;
             border: 1px solid var(--border-color);
         }
         .time-range {
             font-weight: 800;
             font-family: monospace;
-            font-size: 0.85rem;
+            font-size: 1.2rem;
             color: var(--primary);
             letter-spacing: 0.5px;
         }
         .duration {
-            font-size: 0.65rem;
+            font-size: 0.8rem;
             color: var(--text-secondary);
-            margin-top: 0.2rem;
+            margin-right: 0.5rem;
         }
-        /* Stats Footer */
+        .task-desc {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            background: var(--bg-secondary);
+            padding: 0.2rem 0.8rem;
+            border-radius: 1rem;
+            display: inline-block;
+        }
+        /* Bottom Check Button */
+        .task-check-btn {
+            width: 100%;
+            margin-top: 0.5rem;
+            display: flex;
+            justify-content: center;
+        }
+        .check-button {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 3rem;
+            padding: 0.7rem 1.2rem;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            width: 100%;
+            justify-content: center;
+        }
+        .check-button i {
+            font-size: 1.1rem;
+        }
+        .check-button:hover:not(.completed-btn) {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .check-button.completed-btn {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+            cursor: default;
+            opacity: 0.7;
+        }
+        /* Stats Footer (only progress) */
         .stats-footer {
             background: var(--bg-secondary);
             border-radius: var(--radius);
             border: 1px solid var(--border-color);
             padding: 1.25rem 1.5rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1rem;
             margin-top: 1rem;
         }
         .stat-item {
@@ -333,6 +327,8 @@
             border-radius: 1rem;
             padding: 0.9rem 1rem;
             transition: var(--transition);
+            max-width: 300px;
+            margin: 0 auto;
         }
         .stat-icon {
             width: 48px;
@@ -356,7 +352,6 @@
         .stat-label {
             font-size: 0.7rem;
             color: var(--text-secondary);
-            letter-spacing: 0.3px;
         }
         .progress-bar-bg {
             height: 5px;
@@ -402,22 +397,18 @@
             body { padding: 0.9rem; }
             .header { flex-direction: column; text-align: center; }
             .date-box { text-align: center; }
-            .task-content { flex-direction: column; align-items: flex-start; }
-            .task-time-card { align-self: flex-start; }
-            .stat-item { padding: 0.7rem; }
+            .time-range { font-size: 1rem; }
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <!-- Header -->
     <div class="header">
         <div class="title">
             <h1>برنامه هفتگی</h1>
         </div>
         <div class="date-box">
             <div class="greg-date" id="gregDate"></div>
-            <div class="weekday" id="weekdayName"></div>
         </div>
         <div class="action-buttons">
             <button class="icon-btn" id="themeToggle"><i class="fas fa-moon"></i></button>
@@ -425,10 +416,8 @@
         </div>
     </div>
 
-    <!-- Day Selector -->
     <div class="day-selector" id="daySelector"></div>
 
-    <!-- Tasks Panel -->
     <div class="tasks-panel">
         <div class="panel-header">
             <div class="panel-title">
@@ -436,45 +425,20 @@
                 <span class="task-count" id="taskCount">۰ کار</span>
             </div>
             <div class="filter-group">
-                <button class="filter-btn active" data-filter="all">همه</button>
-                <button class="filter-btn" data-filter="pending">جاری</button>
+                <button class="filter-btn" data-filter="all">همه</button>
+                <button class="filter-btn active" data-filter="pending">جاری</button>
                 <button class="filter-btn" data-filter="completed">انجام‌شده</button>
             </div>
         </div>
         <div id="taskListContainer" class="task-list"></div>
     </div>
 
-    <!-- Stats Footer -->
-    <div class="stats-footer" id="statsFooter">
-        <div class="stat-item">
-            <div class="stat-icon"><i class="fas fa-tasks"></i></div>
-            <div class="stat-info">
-                <div class="stat-value" id="totalTasks">0</div>
-                <div class="stat-label">کل وظایف</div>
-                <div class="progress-bar-bg"><div class="progress-fill" id="totalFill"></div></div>
-            </div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
-            <div class="stat-info">
-                <div class="stat-value" id="completedTasks">0</div>
-                <div class="stat-label">انجام شده</div>
-                <div class="progress-bar-bg"><div class="progress-fill" id="completedFill"></div></div>
-            </div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-icon"><i class="fas fa-hourglass-half"></i></div>
-            <div class="stat-info">
-                <div class="stat-value" id="totalHours">0</div>
-                <div class="stat-label">ساعت برنامه</div>
-                <div class="progress-bar-bg"><div class="progress-fill" id="hoursFill"></div></div>
-            </div>
-        </div>
+    <div class="stats-footer">
         <div class="stat-item">
             <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
             <div class="stat-info">
                 <div class="stat-value" id="progressPercent">0%</div>
-                <div class="stat-label">پیشرفت</div>
+                <div class="stat-label">پیشرفت امروز</div>
                 <div class="progress-bar-bg"><div class="progress-fill" id="percentFill"></div></div>
             </div>
         </div>
@@ -483,7 +447,7 @@
 <div id="notification" class="notification"><i class="fas fa-check-circle"></i><span></span></div>
 
 <script>
-    // ======================== SCHEDULE DATA (مطابق برنامه ارائه شده) ========================
+    // ======================== SCHEDULE DATA ========================
     function makeTask(id, title, start, end, category, location, desc = '') {
         return { id, title, start, end, category, location, desc, duration: getDuration(start, end) };
     }
@@ -627,8 +591,8 @@
     ];
 
     // ======================== STATE ========================
-    let currentDay = new Date().getDay();  // 0 یکشنبه .. 6 شنبه
-    let currentFilter = 'all';
+    let currentDay = new Date().getDay();
+    let currentFilter = 'pending';
     let completedMap = JSON.parse(localStorage.getItem('smartProgress')) || {};
 
     function getDayKey(day) { return `day_${day}`; }
@@ -670,37 +634,37 @@
             let priorityClass = isNext ? 'next-priority' : '';
             html += `
                 <div class="task-item ${completedClass} ${priorityClass}" data-id="${task.id}">
-                    <div class="task-content">
-                        <div class="task-check"><div class="check-box ${task.completed ? 'checked' : ''}" data-id="${task.id}"><i class="fas fa-check"></i></div></div>
-                        <div class="task-info">
-                            <div class="task-title">${task.title}</div>
-                            <div class="task-meta">
-                                <span><i class="fas fa-tag"></i> ${task.category}</span>
-                                <span><i class="fas fa-map-marker-alt"></i> ${task.location}</span>
-                                ${task.desc ? `<span><i class="fas fa-info-circle"></i> ${task.desc}</span>` : ''}
-                            </div>
+                    <div class="task-info-grid">
+                        <div class="task-title">${task.title}</div>
+                        <div class="time-display">
+                            <span class="time-range">${task.start} - ${task.end}</span>
+                            <span class="duration">(${task.duration})</span>
                         </div>
-                        <div class="task-time-card">
-                            <div class="time-range">${task.start} - ${task.end}</div>
-                            <div class="duration">${task.duration}</div>
-                        </div>
+                        ${task.desc ? `<div class="task-desc"><i class="fas fa-info-circle"></i> ${task.desc}</div>` : ''}
+                    </div>
+                    <div class="task-check-btn">
+                        <button class="check-button ${task.completed ? 'completed-btn' : ''}" data-id="${task.id}">
+                            <i class="fas ${task.completed ? 'fa-check-circle' : 'fa-circle'}"></i>
+                            ${task.completed ? 'انجام شده' : 'انجام نشده'}
+                        </button>
                     </div>
                 </div>
             `;
         });
         container.innerHTML = html;
         document.getElementById('taskCount').innerText = filtered.length + ' کار';
-        document.querySelectorAll('.check-box').forEach(box => {
-            box.addEventListener('click', (e) => {
-                let taskId = parseInt(box.dataset.id);
+        document.querySelectorAll('.check-button').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                let taskId = parseInt(btn.dataset.id);
                 let tasksNow = getTasksForDay(currentDay);
                 let target = tasksNow.find(t => t.id === taskId);
-                if (target) {
-                    let newStatus = !target.completed;
-                    setCompleted(currentDay, taskId, newStatus);
-                    showNotif(newStatus ? '✅ انجام شد!' : '🔄 برگشت داده شد', newStatus ? 'success' : 'info');
+                if (target && !target.completed) {
+                    setCompleted(currentDay, taskId, true);
+                    showNotif('✅ انجام شد!');
                     renderTasks();
                     updateStats();
+                } else if (target && target.completed) {
+                    showNotif('این کار قبلاً انجام شده است', 'info');
                 }
             });
         });
@@ -711,20 +675,7 @@
         let total = tasks.length;
         let completed = tasks.filter(t => t.completed).length;
         let percent = total ? Math.round((completed / total) * 100) : 0;
-        let totalMinutes = 0;
-        tasks.forEach(t => {
-            let [sh, sm] = t.start.split(':').map(Number);
-            let [eh, em] = t.end.split(':').map(Number);
-            totalMinutes += (eh * 60 + em) - (sh * 60 + sm);
-        });
-        let totalHours = (totalMinutes / 60).toFixed(1);
-        document.getElementById('totalTasks').innerText = total;
-        document.getElementById('completedTasks').innerText = completed;
-        document.getElementById('totalHours').innerText = totalHours;
         document.getElementById('progressPercent').innerText = percent + '%';
-        document.getElementById('completedFill').style.width = percent + '%';
-        document.getElementById('totalFill').style.width = '100%';
-        document.getElementById('hoursFill').style.width = Math.min(percent * 1.2, 100) + '%';
         document.getElementById('percentFill').style.width = percent + '%';
     }
 
@@ -732,9 +683,11 @@
         const now = new Date();
         const dayNames = ['یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه', 'شنبه'];
         const weekday = dayNames[now.getDay()];
-        document.getElementById('weekdayName').innerText = weekday;
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        document.getElementById('gregDate').innerText = now.toLocaleDateString('en-US', options);
+        const months = ['ژانویه', 'فوریه', 'مارس', 'آپریل', 'مه', 'ژوئن', 'ژوئیه', 'اوت', 'سپتامبر', 'اکتبر', 'نوامبر', 'دسامبر'];
+        const day = now.getDate();
+        const month = months[now.getMonth()];
+        const year = now.getFullYear();
+        document.getElementById('gregDate').innerText = `${weekday} ${day} ${month} ${year}`;
     }
 
     function buildDaySelector() {
@@ -797,7 +750,7 @@
         icon.className = saved === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
     }
 
-    // PWA Manifest and Service Worker
+    // PWA manifest and service worker
     function generateManifest() {
         const manifest = {
             name: "برنامه هفتگی",
@@ -808,7 +761,7 @@
             background_color: "#0a0c15",
             icons: [
                 {
-                    src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%236366f1'/%3E%3Ctext x='50' y='67' font-size='50' text-anchor='middle' fill='white' font-family='monospace'%3E📅%3C/text%3E%3C/svg%3E",
+                    src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%236366f1'/%3E%3Ctext x='50' y='67' font-size='48' text-anchor='middle' fill='white' font-family='monospace'%3E📅%3C/text%3E%3C/svg%3E",
                     sizes: "any",
                     type: "image/svg+xml",
                     purpose: "any maskable"
@@ -820,44 +773,38 @@
         document.querySelector('#manifest-placeholder').setAttribute('href', manifestURL);
     }
 
-    function registerServiceWorker() {
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW registration failed:', err));
-        }
-    }
-
-    // Inline service worker script (will be written dynamically)
     function installServiceWorker() {
-        const swCode = `
-            const CACHE_NAME = 'weekly-planner-v1';
-            const urlsToCache = [
-                './',
-                '${window.location.pathname}',
-                'https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.0/Vazirmatn-font-face.css',
-                'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
-                'https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.0/fonts/webfonts/Vazirmatn-Regular.woff2'
-            ];
-            self.addEventListener('install', event => {
-                event.waitUntil(
-                    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
-                );
-            });
-            self.addEventListener('fetch', event => {
-                event.respondWith(
-                    caches.match(event.request).then(response => response || fetch(event.request))
-                );
-            });
-            self.addEventListener('activate', event => {
-                event.waitUntil(
-                    caches.keys().then(keys => Promise.all(
-                        keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
-                    ))
-                );
-            });
-        `;
-        const blob = new Blob([swCode], {type: 'application/javascript'});
-        const url = URL.createObjectURL(blob);
-        navigator.serviceWorker.register(url).catch(console.log);
+        if ('serviceWorker' in navigator) {
+            const swCode = `
+                const CACHE_NAME = 'weekly-planner-v3';
+                const urlsToCache = [
+                    './',
+                    '${window.location.pathname}',
+                    'https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800&family=Amiri:wght@400;700&display=swap',
+                    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
+                ];
+                self.addEventListener('install', event => {
+                    event.waitUntil(
+                        caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+                    );
+                });
+                self.addEventListener('fetch', event => {
+                    event.respondWith(
+                        caches.match(event.request).then(response => response || fetch(event.request))
+                    );
+                });
+                self.addEventListener('activate', event => {
+                    event.waitUntil(
+                        caches.keys().then(keys => Promise.all(
+                            keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
+                        ))
+                    );
+                });
+            `;
+            const blob = new Blob([swCode], {type: 'application/javascript'});
+            const url = URL.createObjectURL(blob);
+            navigator.serviceWorker.register(url).catch(console.log);
+        }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -877,9 +824,7 @@
             });
         });
         generateManifest();
-        if ('serviceWorker' in navigator) {
-            installServiceWorker();
-        }
+        installServiceWorker();
     });
 </script>
 </body>
