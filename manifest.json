@@ -1,0 +1,16 @@
+{
+  "name": "برنامه هفتگی هوشمند",
+  "short_name": "برنامه هفتگی",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#6366f1",
+  "background_color": "#0a0c15",
+  "icons": [
+    {
+      "src": "maskableicon_x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
