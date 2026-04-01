@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>نظام البرمجة الذكي | برنامه‌ریز هوشمند روزانه</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.0/Vazirmatn-font-face.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-glow: rgba(99, 102, 241, 0.4);
+            --secondary: #ec4899;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --radius: 1.5rem;
+            --radius-sm: 1rem;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f1f5f9;
+            --bg-secondary: #ffffff;
+            --bg-card: #eef2ff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --border-color: rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Vazirmatn', 'Inter', sans-serif;
+            background: var(--bg-primary);
+            background-image: radial-gradient(circle at 10% 20%, rgba(99,102,241,0.1) 0%, transparent 40%),
+                              radial-gradient(circle at 90% 80%, rgba(236,72,153,0.1) 0%, transparent 40%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            padding: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* glass header */
+        .glass-header {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(12px);
+            border-radius: var(--radius);
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+
+        [data-theme="light"] .glass-header {
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            box-shadow: 0 8px 20px var(--primary-glow);
+        }
+
+        .logo-text h1 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, var(--primary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .logo-text p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .date-badge {
+            text-align: left;
+        }
+
+        .day-name {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .full-date {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .icon-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 14px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* progress cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-sm);
+            padding: 1.2rem 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            backdrop-filter: blur(4px);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .stat-title {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .stat-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .progress-bar-bg {
+            height: 6px;
+            background: var(--bg-card);
+            border-radius: 10px;
+            margin-top: 0.8rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.8s ease-out;
+        }
+
+        /* day selector */
+        .day-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+
+        .day-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 2rem;
+            padding: 0.6rem 1.2rem;
+            font-family: inherit;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .day-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .day-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 4px 12px var(--primary-glow);
+        }
+
+        .day-btn.today {
+            position: relative;
+            border-color: var(--success);
+        }
+
+        .day-btn.today::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 10px;
+            height: 10px;
+            background: var(--success);
+            border-radius: 50%;
+            border: 2px solid var(--bg-secondary);
+        }
+
+        /* main tasks panel */
+        .tasks-panel {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            padding: 1.8rem;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.2);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .panel-title {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .panel-title h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .task-badge {
+            background: rgba(99, 102, 241, 0.2);
+            padding: 0.3rem 0.9rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            background: var(--bg-card);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-family: inherit;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* task list */
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+
+        .task-item {
+            background: var(--bg-card);
+            border-radius: var(--radius-sm);
+            padding: 1.2rem;
+            border: 2px solid transparent;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+
+        .task-item.next-priority {
+            border-color: var(--warning);
+            background: linear-gradient(115deg, rgba(245, 158, 11, 0.1), var(--bg-card));
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.2);
+        }
+
+        .task-item.completed {
+            opacity: 0.6;
+        }
+
+        .task-item.completed .task-title {
+            text-decoration: line-through;
+        }
+
+        .task-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .task-check {
+            flex-shrink: 0;
+        }
+
+        .task-check .check-box {
+            width: 28px;
+            height: 28px;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 2px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .task-check .check-box.checked {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .task-check .check-box i {
+            color: white;
+            font-size: 0.8rem;
+            opacity: 0;
+        }
+
+        .task-check .check-box.checked i {
+            opacity: 1;
+        }
+
+        .task-info {
+            flex: 1;
+        }
+
+        .task-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .task-meta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .task-meta span i {
+            margin-left: 0.3rem;
+            color: var(--primary);
+        }
+
+        .task-time {
+            text-align: left;
+            min-width: 110px;
+        }
+
+        .time-range {
+            font-weight: 800;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: var(--primary);
+        }
+
+        .duration {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        /* side tip */
+        .tips-sidebar {
+            margin-top: 2rem;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-sm);
+            padding: 1.2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .tips-sidebar h4 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+            color: var(--primary);
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 3rem;
+            font-weight: 600;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .notification.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 700px) {
+            body { padding: 1rem; }
+            .task-content { flex-direction: column; }
+            .task-time { text-align: right; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Glass Header -->
+    <div class="glass-header">
+        <div class="header-content">
+            <div class="logo-area">
+                <div class="logo-icon"><i class="fas fa-calendar-check"></i></div>
+                <div class="logo-text">
+                    <h1>نظام البرمجة الذكي</h1>
+                    <p>مدیریت هوشمند برنامه هفتگی</p>
+                </div>
+            </div>
+            <div class="date-badge">
+                <div class="day-name" id="currentDayName">-</div>
+                <div class="full-date" id="currentFullDate">-</div>
+            </div>
+            <div class="action-buttons">
+                <button class="icon-btn" id="themeToggle"><i class="fas fa-moon"></i></button>
+                <button class="icon-btn" id="resetTodayBtn"><i class="fas fa-redo-alt"></i></button>
+                <button class="icon-btn" id="exportBtn"><i class="fas fa-download"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+        <div class="stat-card"><div class="stat-header"><div class="stat-title"><div class="stat-icon"><i class="fas fa-tasks"></i></div><span>کل وظایف</span></div><div class="stat-number" id="totalTasks">0</div></div><div class="progress-bar-bg"><div class="progress-fill" id="totalFill" style="width:0%"></div></div></div>
+        <div class="stat-card"><div class="stat-header"><div class="stat-title"><div class="stat-icon"><i class="fas fa-check-circle"></i></div><span>انجام شده</span></div><div class="stat-number" id="completedTasks">0</div></div><div class="progress-bar-bg"><div class="progress-fill" id="completedFill" style="width:0%"></div></div></div>
+        <div class="stat-card"><div class="stat-header"><div class="stat-title"><div class="stat-icon"><i class="fas fa-hourglass-half"></i></div><span>ساعت برنامه</span></div><div class="stat-number" id="totalHours">0</div></div><div class="progress-bar-bg"><div class="progress-fill" id="hoursFill" style="width:0%"></div></div></div>
+        <div class="stat-card"><div class="stat-header"><div class="stat-title"><div class="stat-icon"><i class="fas fa-chart-line"></i></div><span>پیشرفت</span></div><div class="stat-number" id="progressPercent">0%</div></div><div class="progress-bar-bg"><div class="progress-fill" id="percentFill" style="width:0%"></div></div></div>
+    </div>
+
+    <!-- Day Selector -->
+    <div class="day-selector" id="daySelector"></div>
+
+    <!-- Tasks Panel -->
+    <div class="tasks-panel">
+        <div class="panel-header">
+            <div class="panel-title"><h2><i class="fas fa-list-ul"></i> برنامه امروز</h2><span class="task-badge" id="taskCount">۰ کار</span></div>
+            <div class="filter-group"><button class="filter-btn active" data-filter="all">همه</button><button class="filter-btn" data-filter="pending">جاری</button><button class="filter-btn" data-filter="completed">انجام‌شده</button></div>
+        </div>
+        <div id="taskListContainer" class="task-list"></div>
+    </div>
+
+    <!-- Tips Sidebar -->
+    <div class="tips-sidebar">
+        <h4><i class="fas fa-brain"></i> تکنیک مراجعت ۱۰-۱۰-۳۰</h4>
+        <p>🎯 <strong>۳۰ دقیقه</strong> دروس اصلی حقوق &nbsp;|&nbsp; <strong>۱۰ دقیقه</strong> واژگان عربی و ترکی &nbsp;|&nbsp; <strong>۱۰ دقیقه</strong> مرور علوم شرعی همان روز<br>
+        ✨ بدون خستگی، بازدهی فوق‌العاده.</p>
+        <p style="margin-top:0.8rem"><i class="fas fa-mosque"></i> اولویت با نماز جماعت و کلاس‌های زنده.</p>
+    </div>
+</div>
+<div id="notification" class="notification"><i class="fas fa-check-circle"></i><span></span></div>
+
+<script>
+    // ======================== SCHEDULE DATA (مطابق فایل PDF و بهبود یافته) ========================
+    const scheduleDB = {};
+
+    // helpers: duration calc
+    function getDuration(start,end){
+        let [sh,sm]=start.split(':').map(Number);
+        let [eh,em]=end.split(':').map(Number);
+        let diff = (eh*60+em) - (sh*60+sm);
+        let h=Math.floor(diff/60), m=diff%60;
+        if(h>0 && m>0) return `${h}ساعت ${m}دقیقه`;
+        if(h>0) return `${h}ساعت`;
+        return `${m}دقیقه`;
+    }
+
+    // ساخت آیتم تسک
+    function makeTask(id, title, start, end, category, location, desc=''){
+        return { id, title, start, end, category, location, desc, duration: getDuration(start,end) };
+    }
+
+    // یکشنبه (0) شامل جمع‌بندی هفته ۲۰-۲۲
+    scheduleDB[0] = [
+        makeTask(1,'نماز صبح (جماعت)','04:50','05:40','عبادی','مسجد','اولویت با جماعت'),
+        makeTask(2,'مرکز بالا + حفظ قرآن','05:40','06:30','عبادی','سحر',''),
+        makeTask(3,'علوم شرعی ۱ (نحو)','06:30','07:10','درسی','واحد',''),
+        makeTask(4,'ورزش + صبحانه','07:10','08:00','شخصی','سلف',''),
+        makeTask(5,'مطالعه آزاد','08:00','09:00','درسی','-',''),
+        makeTask(6,'کلاس حقوق انسان','09:00','12:50','درسی','دانشگاه',''),
+        makeTask(7,'نماز ظهر (جماعت)','12:50','13:30','عبادی','مسجد',''),
+        makeTask(8,'ناهار','13:30','14:15','شخصی','سلف',''),
+        makeTask(9,'علوم شرعی ۲ (تفسیر)','14:15','15:00','درسی','واحد',''),
+        makeTask(10,'نماز عصر (جماعت)','15:00','15:30','عبادی','مسجد',''),
+        makeTask(11,'تولید محتوا','15:30','16:30','محتوا','-',''),
+        makeTask(12,'کلاس قانون اداری','16:30','18:30','درسی','دانشگاه',''),
+        makeTask(13,'درس عربی آنلاین','18:30','19:30','درسی','آنلاین','کلاس زنده'),
+        makeTask(14,'نماز عشاء + شام','19:30','20:30','عبادی','سلف',''),
+        makeTask(15,'کلاس زبان ترکی','20:30','21:30','درسی','خوابگاه',''),
+        makeTask(16,'علوم شریعت (عقیده)','21:30','22:10','درسی','واحد','درس ضبط شده'),
+        makeTask(17,'جمع‌بندی هفته + چیدمان هفته بعد','20:00','22:00','درسی','-','برنامه ویژه یکشنبه'), // جمع‌بندی
+        makeTask(18,'مرور دروس (۱۰-۱۰-۳۰)','22:10','23:00','درسی','-','۳۰ حقوق + ۱۰ عربی + ۱۰ شرعی'),
+        makeTask(19,'آماده‌سازی خواب','23:00','23:15','شخصی','-','')
+    ].sort((a,b)=> (a.start.split(':')[0]*60+ +a.start.split(':')[1]) - (b.start.split(':')[0]*60+ +b.start.split(':')[1]));
+
+    // دوشنبه (1) : برنامه صبح ویژه + روتین شب
+    scheduleDB[1] = [
+        makeTask(1,'روال صبح: نماز، قرآن، شریعت۱، صبحانه، ورزش','04:50','09:00','عبادی','-',''),
+        makeTask(2,'تکرار عمیق دروس حقوق','09:00','10:30','درسی','-','مرور عمیق مطالب روز قبل'),
+        makeTask(3,'ضبط ویدیو یوتیوب (ایده‌های عربی)','10:30','11:30','محتوا','کانال دوم',''),
+        makeTask(4,'نماز ظهر (جماعت)','11:30','12:30','عبادی','مسجد',''),
+        makeTask(5,'ناهار','12:30','13:15','شخصی','سلف',''),
+        makeTask(6,'علوم شرعی ۲ (حدیث)','13:15','14:00','درسی','واحد',''),
+        makeTask(7,'استراحت','14:00','15:00','شخصی','-',''),
+        makeTask(8,'نماز عصر (جماعت)','15:00','15:30','عبادی','مسجد',''),
+        makeTask(9,'کلاس منهجیت البحث','15:30','17:20','درسی','دانشگاه',''),
+        makeTask(10,'تفریح','17:20','18:30','شخصی','خوابگاه',''),
+        makeTask(11,'درس عربی آنلاین','18:30','19:30','درسی','آنلاین',''),
+        makeTask(12,'نماز عشاء + شام','19:30','21:00','عبادی','سلف',''),
+        makeTask(13,'علوم شرعی ۳ (فقه)','21:00','21:40','درسی','واحد',''),
+        makeTask(14,'تکرار دروس (۱۰-۱۰-۳۰)','21:40','22:40','درسی','-',''),
+        makeTask(15,'مطالعه آزاد','22:40','23:15','درسی','-','')
+    ];
+
+    // سه‌شنبه (2) مشابه دوشنبه
+    scheduleDB[2] = JSON.parse(JSON.stringify(scheduleDB[1])).map(t=>{ t.id+=100; return t; });
+
+    // چهارشنبه (3) : ویژه جلسه قرائت مسجد + تغییر ساعت شام
+    scheduleDB[3] = [
+        makeTask(1,'نماز صبح (جماعت)','04:50','05:40','عبادی','مسجد',''),
+        makeTask(2,'مرکز بالا + حفظ قرآن','05:40','06:30','عبادی','سحر',''),
+        makeTask(3,'علوم شرعی ۱ (نحو)','06:30','07:10','درسی','واحد',''),
+        makeTask(4,'ورزش + صبحانه','07:10','08:00','شخصی','سلف',''),
+        makeTask(5,'مطالعه آزاد','08:00','09:00','درسی','-',''),
+        makeTask(6,'کلاس حقوق انسان','09:00','12:50','درسی','دانشگاه',''),
+        makeTask(7,'نماز ظهر (جماعت)','12:50','13:30','عبادی','مسجد',''),
+        makeTask(8,'ناهار','13:30','14:15','شخصی','سلف',''),
+        makeTask(9,'علوم شرعی ۲ (تفسیر)','14:15','15:00','درسی','واحد',''),
+        makeTask(10,'نماز عصر (جماعت)','15:00','15:30','عبادی','مسجد',''),
+        makeTask(11,'تولید محتوا','15:30','16:30','محتوا','-',''),
+        makeTask(12,'کلاس قانون اداری','16:30','18:30','درسی','دانشگاه',''),
+        makeTask(13,'درس عربی آنلاین','18:30','19:30','درسی','آنلاین',''),
+        makeTask(14,'جلسه قرائت مسجد (به جای شام)','19:30','20:30','عبادی','مسجد','نکته چهارشنبه'),
+        makeTask(15,'شام سریع','20:30','20:50','شخصی','سلف','بعد از جلسه'),
+        makeTask(16,'کلاس زبان ترکی','20:50','21:50','درسی','خوابگاه',''),
+        makeTask(17,'علوم شریعت (عقیده)','21:50','22:30','درسی','واحد',''),
+        makeTask(18,'مرور دروس (۱۰-۱۰-۳۰)','22:30','23:10','درسی','-',''),
+        makeTask(19,'آماده‌سازی خواب','23:10','23:25','شخصی','-','')
+    ];
+
+    // پنجشنبه (4)
+    scheduleDB[4] = [
+        makeTask(1,'تولید و انتشار ویدیو','09:00','11:00','محتوا','-',''),
+        makeTask(2,'علوم شرعی ۱','11:00','12:00','درسی','واحد',''),
+        makeTask(3,'ناهار + نماز ظهر','12:00','13:00','عبادی','سلف',''),
+        makeTask(4,'کلاس قانون تامین','13:40','17:20','درسی','دانشگاه',''),
+        makeTask(5,'علوم شرعی ۲ و ۳','18:00','20:00','درسی','واحد',''),
+        makeTask(6,'تفریح آزاد','20:00','23:15','شخصی','-','')
+    ];
+
+    // جمعه (5)
+    scheduleDB[5] = [
+        makeTask(1,'نماز صبح + قرآن','05:00','07:00','عبادی','مسجد',''),
+        makeTask(2,'صبحانه و استراحت','07:00','09:00','شخصی','سلف',''),
+        makeTask(3,'مطالعه آزاد','09:00','11:00','درسی','-',''),
+        makeTask(4,'نماز ظهر + ناهار','11:00','13:00','عبادی','مسجد',''),
+        makeTask(5,'استراحت و تفریح','13:00','17:00','شخصی','-',''),
+        makeTask(6,'برنامه‌ریزی هفته بعد','17:00','19:00','درسی','-','جمع‌بندی'),
+        makeTask(7,'شام و فعالیت آزاد','19:00','23:00','شخصی','-','')
+    ];
+
+    // شنبه (6) برنامه آزاد یوتیوب و قرائت
+    scheduleDB[6] = [
+        makeTask(1,'روال صبح (نماز، قرآن، شریعت۱، ورزش)','04:50','09:00','عبادی','-',''),
+        makeTask(2,'یوتیوب (ضبط محتوا)','09:00','11:00','محتوا','کانال دوم',''),
+        makeTask(3,'درس قرائت و تجوید','11:00','12:30','درسی','-',''),
+        makeTask(4,'نماز ظهر + ناهار','12:30','13:30','عبادی','سلف',''),
+        makeTask(5,'کلاس حقوق انسان','13:30','17:30','درسی','دانشگاه',''),
+        makeTask(6,'درس عربی آنلاین','18:30','19:30','درسی','آنلاین',''),
+        makeTask(7,'نماز عشاء + شام','19:30','20:30','عبادی','سلف',''),
+        makeTask(8,'کلاس زبان ترکی','20:30','21:30','درسی','خوابگاه',''),
+        makeTask(9,'علوم شریعت (عقیده)','21:30','22:10','درسی','واحد',''),
+        makeTask(10,'مرور دروس','22:10','23:00','درسی','-',''),
+        makeTask(11,'آماده‌سازی خواب','23:00','23:15','شخصی','-','')
+    ];
+
+    // global state
+    let currentDay = new Date().getDay();  // 0 یکشنبه .. 6 شنبه
+    let currentFilter = 'all';
+    let completedMap = JSON.parse(localStorage.getItem('smartProgress')) || {};
+
+    function getDayKey(day) { return `day_${day}`; }
+    function isCompleted(day, taskId) { return completedMap[getDayKey(day)]?.includes(taskId) || false; }
+    function setCompleted(day, taskId, completed) {
+        let key = getDayKey(day);
+        if(!completedMap[key]) completedMap[key]=[];
+        if(completed && !completedMap[key].includes(taskId)) completedMap[key].push(taskId);
+        else if(!completed && completedMap[key].includes(taskId)) completedMap[key]=completedMap[key].filter(id=>id!==taskId);
+        localStorage.setItem('smartProgress', JSON.stringify(completedMap));
+    }
+
+    function getTasksForDay(day){
+        let tasks = scheduleDB[day] || [];
+        return tasks.map(t=> ({...t, completed: isCompleted(day, t.id)}));
+    }
+
+    function getNextPendingTask(tasks){
+        return tasks.find(t=>!t.completed);
+    }
+
+    function renderTasks(){
+        let tasks = getTasksForDay(currentDay);
+        let filtered = tasks;
+        if(currentFilter === 'completed') filtered = tasks.filter(t=>t.completed);
+        else if(currentFilter === 'pending') filtered = tasks.filter(t=>!t.completed);
+        
+        let container = document.getElementById('taskListContainer');
+        if(!filtered.length){
+            container.innerHTML = `<div class="empty-state"><i class="fas fa-calendar-week"></i><h3>برنامه‌ای یافت نشد</h3><p>فیلتر یا روز را تغییر دهید</p></div>`;
+            document.getElementById('taskCount').innerText = '۰ کار';
+            return;
+        }
+        let nextId = getNextPendingTask(tasks)?.id;
+        let html = '';
+        filtered.forEach(task=>{
+            let isNext = (!task.completed && task.id === nextId);
+            let completedClass = task.completed ? 'completed' : '';
+            let priorityClass = isNext ? 'next-priority' : '';
+            html += `
+                <div class="task-item ${completedClass} ${priorityClass}" data-id="${task.id}">
+                    <div class="task-content">
+                        <div class="task-check"><div class="check-box ${task.completed ? 'checked' : ''}" data-id="${task.id}"><i class="fas fa-check"></i></div></div>
+                        <div class="task-info">
+                            <div class="task-title">${task.title}</div>
+                            <div class="task-meta"><span><i class="fas fa-tag"></i> ${task.category}</span><span><i class="fas fa-map-marker-alt"></i> ${task.location}</span>${task.desc ? `<span><i class="fas fa-info-circle"></i> ${task.desc}</span>`:''}</div>
+                        </div>
+                        <div class="task-time"><div class="time-range">${task.start} - ${task.end}</div><div class="duration">${task.duration}</div></div>
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+        document.getElementById('taskCount').innerText = filtered.length + ' کار';
+        // attach checkbox events
+        document.querySelectorAll('.check-box').forEach(box=>{
+            box.addEventListener('click',(e)=>{
+                let taskId = parseInt(box.dataset.id);
+                let tasksNow = getTasksForDay(currentDay);
+                let targetTask = tasksNow.find(t=>t.id===taskId);
+                if(targetTask){
+                    let newStatus = !targetTask.completed;
+                    setCompleted(currentDay, taskId, newStatus);
+                    showNotif(newStatus ? '✅ کار انجام شد!' : '🔄 کار به حالت قبل برگشت', newStatus ? 'success' : 'info');
+                    renderTasks();
+                    updateStats();
+                }
+            });
+        });
+    }
+
+    function updateStats(){
+        let tasks = getTasksForDay(currentDay);
+        let total = tasks.length;
+        let completed = tasks.filter(t=>t.completed).length;
+        let percent = total ? Math.round((completed/total)*100) : 0;
+        let totalMinutes = 0;
+        tasks.forEach(t=>{
+            let [sh,sm]=t.start.split(':').map(Number);
+            let [eh,em]=t.end.split(':').map(Number);
+            totalMinutes += (eh*60+em) - (sh*60+sm);
+        });
+        let totalHours = (totalMinutes/60).toFixed(1);
+        document.getElementById('totalTasks').innerText = total;
+        document.getElementById('completedTasks').innerText = completed;
+        document.getElementById('totalHours').innerText = totalHours;
+        document.getElementById('progressPercent').innerText = percent+'%';
+        document.getElementById('completedFill').style.width = percent+'%';
+        document.getElementById('totalFill').style.width = '100%';
+        document.getElementById('hoursFill').style.width = Math.min(percent*1.2,100)+'%';
+        document.getElementById('percentFill').style.width = percent+'%';
+    }
+
+    function updateDateDisplay(){
+        let now = new Date();
+        let dayNames = ['یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنج‌شنبه','جمعه','شنبه'];
+        let persianDay = now.getDay();
+        document.getElementById('currentDayName').innerHTML = dayNames[persianDay];
+        document.getElementById('currentFullDate').innerHTML = now.toLocaleDateString('fa-IR', { year:'numeric', month:'long', day:'numeric' });
+        document.querySelectorAll('.day-btn').forEach(btn=>{
+            btn.classList.remove('today');
+            if(parseInt(btn.dataset.day)===persianDay) btn.classList.add('today');
+        });
+    }
+
+    function buildDaySelector(){
+        let days = ['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنج‌شنبه','جمعه'];
+        let container = document.getElementById('daySelector');
+        container.innerHTML = '';
+        days.forEach((name,idx)=>{
+            let realIdx = (idx+6)%7; // mapping 0=>شنبه?, but we use day index standard: 0 یکشنبه, but user expects شنبه=6? we keep direct: 0=یکشنبه,1=دوشنبه...6=شنبه. Let's align: our day numbers 0..6 with one-index: 0 یکشنبه ,1 دوشنبه ...6 شنبه
+            let dayNum = (idx+1)%7; // to match real days? simpler: we use the same order as scheduleDB keys: 0 یکشنبه,1 دوشنبه ...6 شنبه
+            let btnDay = (idx+1)%7; // for selector to match db keys: 0 یکشنبه ... 6 شنبه
+            let btn = document.createElement('button');
+            btn.className = 'day-btn';
+            if(currentDay === btnDay) btn.classList.add('active');
+            btn.innerText = name;
+            btn.dataset.day = btnDay;
+            btn.addEventListener('click',()=>{
+                currentDay = btnDay;
+                document.querySelectorAll('.day-btn').forEach(b=>b.classList.remove('active'));
+                btn.classList.add('active');
+                renderTasks();
+                updateStats();
+            });
+            container.appendChild(btn);
+        });
+        updateDateDisplay();
+    }
+
+    function showNotif(msg, type='success'){
+        let notif = document.getElementById('notification');
+        notif.querySelector('span').innerText = msg;
+        notif.classList.add('show');
+        setTimeout(()=>notif.classList.remove('show'), 2200);
+    }
+
+    function resetToday(){
+        if(confirm('بازنشانی تمام کارهای امروز؟')){
+            let key = getDayKey(currentDay);
+            completedMap[key] = [];
+            localStorage.setItem('smartProgress', JSON.stringify(completedMap));
+            renderTasks();
+            updateStats();
+            showNotif('امروز بازنشانی شد','info');
+        }
+    }
+
+    function exportData(){
+        let data = { date:new Date().toISOString(), progress:completedMap };
+        let blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+        let a=document.createElement('a');
+        a.href=URL.createObjectURL(blob);
+        a.download=`schedule_${new Date().toISOString().slice(0,10)}.json`;
+        a.click();
+        showNotif('خروجی گرفته شد');
+    }
+
+    function toggleTheme(){
+        let html = document.documentElement;
+        let current = html.getAttribute('data-theme');
+        let newTheme = current === 'light' ? 'dark' : 'light';
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        let icon = document.querySelector('#themeToggle i');
+        icon.className = newTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+    }
+
+    function loadTheme(){
+        let saved = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', saved);
+        let icon = document.querySelector('#themeToggle i');
+        icon.className = saved === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+    }
+
+    document.addEventListener('DOMContentLoaded',()=>{
+        buildDaySelector();
+        renderTasks();
+        updateStats();
+        loadTheme();
+        document.getElementById('resetTodayBtn').addEventListener('click',resetToday);
+        document.getElementById('exportBtn').addEventListener('click',exportData);
+        document.getElementById('themeToggle').addEventListener('click',toggleTheme);
+        document.querySelectorAll('.filter-btn').forEach(btn=>{
+            btn.addEventListener('click',()=>{
+                document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                renderTasks();
+            });
+        });
+        // initial today highlight
+        let todayIdx = new Date().getDay();
+        let todayBtn = document.querySelector(`.day-btn[data-day="${todayIdx}"]`);
+        if(todayBtn) todayBtn.classList.add('today');
+    });
+</script>
+</body>
+</html>
