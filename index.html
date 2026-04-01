@@ -6,271 +6,538 @@
     <meta name="theme-color" content="#6366f1">
     <title>برنامه هفتگی</title>
     <link rel="manifest" href="data:application/manifest+json,{}" id="manifest-placeholder">
-    <!-- Google Fonts: Vazirmatn + Amiri (fallback) -->
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         :root {
             --primary: #6366f1;
             --primary-dark: #4f46e5;
-            --primary-glow: rgba(99, 102, 241, 0.3);
+            --primary-light: #818cf8;
+            --primary-glow: rgba(99, 102, 241, 0.4);
             --secondary: #ec4899;
+            --secondary-glow: rgba(236, 72, 153, 0.3);
             --success: #10b981;
+            --success-glow: rgba(16, 185, 129, 0.3);
             --warning: #f59e0b;
+            --warning-glow: rgba(245, 158, 11, 0.3);
+            --info: #3b82f6;
             --bg-primary: #0a0c15;
             --bg-secondary: #111827;
-            --bg-card: #1f2937;
+            --bg-card: rgba(31, 41, 55, 0.7);
+            --bg-glass: rgba(31, 41, 55, 0.85);
             --text-primary: #f9fafb;
             --text-secondary: #9ca3af;
-            --border-color: rgba(255, 255, 255, 0.08);
-            --radius: 1.25rem;
-            --radius-sm: 0.875rem;
-            --transition: all 0.2s ease;
+            --text-muted: #6b7280;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --border-glow: rgba(99, 102, 241, 0.5);
+            --radius: 1.5rem;
+            --radius-lg: 2rem;
+            --radius-sm: 1rem;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.15);
+            --shadow: 0 8px 32px rgba(0,0,0,0.25);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.35);
+            --shadow-glow: 0 0 40px var(--primary-glow);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.15s ease;
         }
+        
         [data-theme="light"] {
-            --bg-primary: #f3f4f6;
+            --bg-primary: #f8fafc;
             --bg-secondary: #ffffff;
-            --bg-card: #f9fafb;
-            --text-primary: #111827;
-            --text-secondary: #4b5563;
+            --bg-card: rgba(255, 255, 255, 0.9);
+            --bg-glass: rgba(255, 255, 255, 0.95);
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
             --border-color: rgba(0, 0, 0, 0.08);
+            --shadow: 0 8px 32px rgba(0,0,0,0.08);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.12);
         }
+        
         body {
-            font-family: 'Vazirmatn', 'Amiri', 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Vazirmatn', 'Amiri', system-ui, sans-serif;
             background: var(--bg-primary);
             min-height: 100vh;
             color: var(--text-primary);
-            padding: 1.25rem;
+            padding: 1rem;
             transition: var(--transition);
+            position: relative;
+            overflow-x: hidden;
         }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: 
+                radial-gradient(ellipse at 20% 80%, rgba(99,102,241,0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(236,72,153,0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(16,185,129,0.08) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: -1;
+            animation: bgPulse 15s ease-in-out infinite;
+        }
+        
+        @keyframes bgPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+        
+        .particles {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px; height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 20s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-100px) rotate(720deg); opacity: 0; }
+        }
+        
         .container {
-            max-width: 1280px;
+            max-width: 1200px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
-        /* Header */
+        
+        /* ===== HEADER ===== */
         .header {
-            background: var(--bg-secondary);
-            border-radius: var(--radius);
-            padding: 1.25rem 1.75rem;
-            margin-bottom: 1.5rem;
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 1rem;
             border: 1px solid var(--border-color);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
         }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0; left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--success));
+            opacity: 0.8;
+        }
+        
+        .title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
         .title h1 {
-            font-size: 1.6rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--success));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
+        
+        .title-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 4px 12px var(--primary-glow);
+        }
+        
         .date-box {
             text-align: left;
-            font-weight: 500;
+            background: var(--bg-card);
+            padding: 0.6rem 1.2rem;
+            border-radius: 2rem;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        .greg-date {
-            font-size: 1rem;
-            font-weight: 600;
+        
+        .date-icon {
             color: var(--primary);
+            font-size: 1rem;
         }
+        
+        .greg-date {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
         .action-buttons {
             display: flex;
             gap: 0.75rem;
         }
+        
         .icon-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 1rem;
+            width: 48px;
+            height: 48px;
+            border-radius: 1.25rem;
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             color: var(--text-primary);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             cursor: pointer;
             transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
+        
+        .icon-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: var(--transition);
+            z-index: -1;
+        }
+        
         .icon-btn:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-glow);
+            border-color: transparent;
         }
-        /* Day Selector */
+        
+        .icon-btn:hover::before { opacity: 1; }
+        .icon-btn:hover i { color: white; }
+        .icon-btn:active { transform: translateY(-1px); }
+        
+        /* ===== DAY SELECTOR ===== */
         .day-selector {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.6rem;
+            gap: 0.5rem;
             margin-bottom: 2rem;
             justify-content: center;
-        }
-        .day-btn {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
+            padding: 0.5rem;
+            background: var(--bg-glass);
             border-radius: 3rem;
-            padding: 0.6rem 1.2rem;
+            border: 1px solid var(--border-color);
+            max-width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .day-btn {
+            background: transparent;
+            border: none;
+            border-radius: 2rem;
+            padding: 0.65rem 1.4rem;
             font-family: inherit;
             font-weight: 600;
             font-size: 0.9rem;
-            color: var(--text-primary);
+            color: var(--text-secondary);
             cursor: pointer;
             transition: var(--transition);
+            position: relative;
+            min-width: 75px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
         }
+        
+        .day-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 2rem;
+            opacity: 0;
+            transition: var(--transition);
+            z-index: -1;
+        }
+        
         .day-btn:hover {
-            border-color: var(--primary);
+            color: var(--text-primary);
             transform: translateY(-2px);
         }
+        
+        .day-btn:hover::before { opacity: 0.15; }
+        
         .day-btn.active {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            border-color: transparent;
             color: white;
-            box-shadow: 0 6px 14px var(--primary-glow);
+            box-shadow: 0 6px 20px var(--primary-glow);
         }
+        
+        .day-btn.active::before { opacity: 1; }
+        
         .day-btn.today {
-            position: relative;
-            border-color: var(--success);
+            border: 2px solid var(--success);
         }
+        
         .day-btn.today::after {
             content: '';
             position: absolute;
-            top: -4px;
-            right: -4px;
-            width: 10px;
-            height: 10px;
+            top: -6px;
+            right: -6px;
+            width: 14px;
+            height: 14px;
             background: var(--success);
             border-radius: 50%;
-            border: 2px solid var(--bg-secondary);
+            border: 3px solid var(--bg-secondary);
+            animation: pulse 2s infinite;
         }
-        /* Tasks Panel */
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 var(--success-glow); }
+            50% { transform: scale(1.1); box-shadow: 0 0 0 8px transparent; }
+        }
+        
+        /* ===== TASKS PANEL ===== */
         .tasks-panel {
-            background: var(--bg-secondary);
-            border-radius: var(--radius);
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--radius-lg);
             border: 1px solid var(--border-color);
-            padding: 1.5rem;
+            padding: 1.75rem;
             margin-bottom: 2rem;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow-lg);
+            position: relative;
         }
+        
         .panel-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 1rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.75rem;
+            padding-bottom: 1.25rem;
+            border-bottom: 1px solid var(--border-color);
         }
+        
         .panel-title {
             display: flex;
             align-items: center;
             gap: 0.75rem;
         }
+        
         .panel-title h2 {
-            font-size: 1.35rem;
-            font-weight: 700;
+            font-size: 1.4rem;
+            font-weight: 800;
         }
+        
+        .panel-title-icon {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 0.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+        
         .task-count {
-            background: rgba(99,102,241,0.15);
-            padding: 0.3rem 0.9rem;
+            background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(236,72,153,0.2));
+            padding: 0.35rem 1rem;
             border-radius: 2rem;
-            font-size: 0.8rem;
-            font-weight: 600;
+            font-size: 0.85rem;
+            font-weight: 700;
             color: var(--primary);
+            border: 1px solid var(--border-glow);
         }
+        
         .filter-group {
             display: flex;
-            gap: 0.5rem;
-        }
-        .filter-btn {
+            gap: 0.4rem;
             background: var(--bg-card);
-            border: none;
-            padding: 0.45rem 1rem;
+            padding: 0.3rem;
             border-radius: 2rem;
+            border: 1px solid var(--border-color);
+        }
+        
+        .filter-btn {
+            background: transparent;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 1.75rem;
             font-family: inherit;
-            font-size: 0.8rem;
-            font-weight: 500;
+            font-size: 0.85rem;
+            font-weight: 600;
             color: var(--text-secondary);
             cursor: pointer;
             transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
         }
+        
+        .filter-btn i { font-size: 0.85rem; }
+        .filter-btn:hover { color: var(--text-primary); }
+        
         .filter-btn.active {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
+            box-shadow: 0 4px 12px var(--primary-glow);
         }
-        /* Task List */
+        
+        /* ===== TASK LIST ===== */
         .task-list {
             display: flex;
             flex-direction: column;
             gap: 1rem;
         }
+        
         .task-item {
             background: var(--bg-card);
-            border-radius: 1.25rem;
-            padding: 1.2rem;
+            border-radius: 1.5rem;
+            padding: 1.25rem 1.5rem;
             border: 1px solid var(--border-color);
             transition: var(--transition);
             position: relative;
+            overflow: hidden;
+            animation: slideIn 0.3s ease-out;
         }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .task-item::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--border-glow);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .task-item:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow);
+            border-color: var(--border-glow);
+        }
+        
+        .task-item:hover::before { opacity: 1; }
+        
         .task-item.next-priority {
             border-right: 4px solid var(--warning);
-            background: linear-gradient(115deg, rgba(245,158,11,0.08), var(--bg-card));
+            background: linear-gradient(115deg, rgba(245,158,11,0.12), var(--bg-card));
+            animation: priorityPulse 3s ease-in-out infinite;
         }
+        
+        @keyframes priorityPulse {
+            0%, 100% { box-shadow: 0 0 0 0 var(--warning-glow); }
+            50% { box-shadow: 0 0 0 12px transparent; }
+        }
+        
         .task-item.completed {
-            opacity: 0.7;
+            opacity: 0.65;
         }
+        
         .task-item.completed .task-title {
             text-decoration: line-through;
+            text-decoration-thickness: 2px;
         }
+        
         /* Centered task info */
         .task-info-grid {
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
-            gap: 0.8rem;
+            gap: 0.9rem;
             margin-bottom: 1rem;
+            padding-top: 0.5rem;
         }
+        
         .task-title {
             font-weight: 800;
-            font-size: 1.2rem;
-            margin-bottom: 0.2rem;
+            font-size: 1.25rem;
+            line-height: 1.4;
         }
-        /* Time display larger */
+        
         .time-display {
-            background: var(--bg-secondary);
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card));
             border-radius: 2rem;
-            padding: 0.5rem 1.2rem;
-            display: inline-block;
+            padding: 0.5rem 1.4rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
             border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
         }
+        
+        .time-icon {
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+        
         .time-range {
             font-weight: 800;
-            font-family: monospace;
-            font-size: 1.2rem;
+            font-family: 'Vazirmatn', monospace;
+            font-size: 1.25rem;
             color: var(--primary);
             letter-spacing: 0.5px;
         }
+        
         .duration {
             font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-right: 0.5rem;
+            color: var(--text-muted);
+            background: var(--bg-secondary);
+            padding: 0.2rem 0.6rem;
+            border-radius: 1rem;
         }
+        
         .task-desc {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: var(--text-secondary);
             background: var(--bg-secondary);
-            padding: 0.2rem 0.8rem;
+            padding: 0.35rem 1rem;
             border-radius: 1rem;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            max-width: 100%;
+            text-align: center;
         }
+        
+        .desc-icon {
+            color: var(--warning);
+            font-size: 0.75rem;
+        }
+        
         /* Bottom Check Button */
         .task-check-btn {
             width: 100%;
@@ -278,14 +545,15 @@
             display: flex;
             justify-content: center;
         }
+        
         .check-button {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card));
+            border: 2px solid var(--border-color);
             border-radius: 3rem;
-            padding: 0.7rem 1.2rem;
+            padding: 0.8rem 1.5rem;
             font-family: inherit;
             font-size: 1rem;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--text-primary);
             cursor: pointer;
             transition: var(--transition);
@@ -294,79 +562,154 @@
             gap: 0.6rem;
             width: 100%;
             justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
+        
+        .check-button::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, var(--success), #059669);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: -1;
+        }
+        
         .check-button i {
             font-size: 1.1rem;
+            transition: var(--transition);
         }
+        
         .check-button:hover:not(.completed-btn) {
-            background: var(--success);
             border-color: var(--success);
-            color: white;
             transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--success-glow);
         }
+        
+        .check-button:hover:not(.completed-btn)::before { opacity: 1; }
+        .check-button:hover:not(.completed-btn) i { color: white; }
+        .check-button:hover:not(.completed-btn) span { color: white; }
+        
         .check-button.completed-btn {
-            background: var(--success);
+            background: linear-gradient(135deg, var(--success), #059669);
             border-color: var(--success);
             color: white;
             cursor: default;
-            opacity: 0.7;
         }
-        /* Stats Footer (only progress) */
+        
+        .check-button.completed-btn i { animation: checkPop 0.4s ease; }
+        
+        @keyframes checkPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.4); }
+            100% { transform: scale(1); }
+        }
+        
+        /* ===== STATS FOOTER ===== */
         .stats-footer {
-            background: var(--bg-secondary);
-            border-radius: var(--radius);
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-lg);
             border: 1px solid var(--border-color);
-            padding: 1.25rem 1.5rem;
+            padding: 1.5rem 2rem;
             margin-top: 1rem;
+            box-shadow: var(--shadow);
         }
+        
         .stat-item {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 1.25rem;
             background: var(--bg-card);
-            border-radius: 1rem;
-            padding: 0.9rem 1rem;
+            border-radius: 1.25rem;
+            padding: 1rem 1.5rem;
             transition: var(--transition);
-            max-width: 300px;
+            max-width: 320px;
             margin: 0 auto;
+            border: 1px solid var(--border-color);
         }
+        
+        .stat-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-glow);
+        }
+        
         .stat-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 1rem;
+            width: 56px;
+            height: 56px;
+            border-radius: 1.25rem;
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3rem;
-            color: white;
-        }
-        .stat-info {
-            flex: 1;
-        }
-        .stat-value {
             font-size: 1.5rem;
-            font-weight: 800;
-            line-height: 1.2;
+            color: white;
+            box-shadow: 0 8px 20px var(--primary-glow);
+            flex-shrink: 0;
         }
+        
+        .stat-info { flex: 1; }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 900;
+            line-height: 1.1;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
         .stat-label {
-            font-size: 0.7rem;
+            font-size: 0.8rem;
             color: var(--text-secondary);
+            margin-bottom: 0.5rem;
         }
+        
         .progress-bar-bg {
-            height: 5px;
+            height: 8px;
             background: var(--bg-secondary);
             border-radius: 10px;
-            margin-top: 0.6rem;
             overflow: hidden;
+            position: relative;
         }
+        
+        .progress-bar-bg::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--success));
             width: 0%;
             border-radius: 10px;
-            transition: width 0.5s ease;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
         }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 4px;
+            height: 100%;
+            background: white;
+            border-radius: 2px;
+            opacity: 0.6;
+            box-shadow: 0 0 10px white;
+        }
+        
+        /* ===== NOTIFICATION ===== */
         .notification {
             position: fixed;
             bottom: 2rem;
@@ -374,458 +717,598 @@
             transform: translateX(-50%) translateY(100px);
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            padding: 0.7rem 1.6rem;
+            padding: 0.9rem 2rem;
             border-radius: 3rem;
-            font-weight: 500;
+            font-weight: 600;
             z-index: 1000;
-            transition: transform 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
-            gap: 0.6rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            font-size: 0.85rem;
+            gap: 0.75rem;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3), 0 0 30px var(--primary-glow);
+            font-size: 0.9rem;
+            border: 1px solid rgba(255,255,255,0.2);
         }
+        
         .notification.show {
             transform: translateX(-50%) translateY(0);
         }
+        
+        .notification i {
+            animation: bounce 0.5s ease;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+        
+        /* ===== EMPTY STATE ===== */
         .empty-state {
             text-align: center;
-            padding: 2.5rem;
+            padding: 3rem 2rem;
             color: var(--text-secondary);
         }
-        @media (max-width: 640px) {
-            body { padding: 0.9rem; }
-            .header { flex-direction: column; text-align: center; }
-            .date-box { text-align: center; }
-            .time-range { font-size: 1rem; }
+        
+        .empty-state-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 1rem;
+            background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(236,72,153,0.15));
+            border-radius: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.8rem;
+            animation: float 3s ease-in-out infinite;
         }
+        
+        .empty-state h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        
+        .empty-state p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            body { padding: 0.75rem; }
+            .header { flex-direction: column; text-align: center; padding: 1.25rem 1.5rem; }
+            .date-box { text-align: center; }
+            .panel-header { flex-direction: column; text-align: center; }
+            .filter-group { width: 100%; justify-content: center; }
+            .time-range { font-size: 1.1rem; }
+            .task-title { font-size: 1.15rem; }
+            .stat-item { flex-direction: column; text-align: center; padding: 1.25rem; }
+            .stat-value { font-size: 2.2rem; }
+        }
+        
+        @media (max-width: 480px) {
+            .day-selector { flex-wrap: wrap; padding: 0.4rem; }
+            .day-btn { padding: 0.5rem 1rem; font-size: 0.8rem; min-width: 65px; }
+            .tasks-panel, .stats-footer { padding: 1.25rem; }
+            .task-item { padding: 1rem 1.25rem; }
+        }
+        
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-secondary); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            border: 2px solid var(--bg-secondary);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary));
+        }
+        
+        ::selection { background: var(--primary); color: white; }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="header">
-        <div class="title">
-            <h1>برنامه هفتگی</h1>
-        </div>
-        <div class="date-box">
-            <div class="greg-date" id="gregDate"></div>
-        </div>
-        <div class="action-buttons">
-            <button class="icon-btn" id="themeToggle"><i class="fas fa-moon"></i></button>
-            <button class="icon-btn" id="resetTodayBtn"><i class="fas fa-redo-alt"></i></button>
-        </div>
-    </div>
-
-    <div class="day-selector" id="daySelector"></div>
-
-    <div class="tasks-panel">
-        <div class="panel-header">
-            <div class="panel-title">
-                <h2><i class="fas fa-list-check"></i> برنامه روز</h2>
-                <span class="task-count" id="taskCount">۰ کار</span>
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="title">
+                <div class="title-icon">
+                    <i class="fas fa-calendar-week"></i>
+                </div>
+                <h1>برنامه هفتگی هوشمند</h1>
             </div>
-            <div class="filter-group">
-                <button class="filter-btn" data-filter="all">همه</button>
-                <button class="filter-btn active" data-filter="pending">جاری</button>
-                <button class="filter-btn" data-filter="completed">انجام‌شده</button>
+            <div class="date-box">
+                <i class="far fa-calendar date-icon"></i>
+                <div class="greg-date" id="gregDate"></div>
             </div>
-        </div>
-        <div id="taskListContainer" class="task-list"></div>
-    </div>
-
-    <div class="stats-footer">
-        <div class="stat-item">
-            <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
-            <div class="stat-info">
-                <div class="stat-value" id="progressPercent">0%</div>
-                <div class="stat-label">پیشرفت امروز</div>
-                <div class="progress-bar-bg"><div class="progress-fill" id="percentFill"></div></div>
+            <div class="action-buttons">
+                <button class="icon-btn" id="themeToggle" title="تغییر تم">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="icon-btn" id="resetTodayBtn" title="بازنشانی امروز">
+                    <i class="fas fa-rotate-right"></i>
+                </button>
+                <button class="icon-btn" id="shareBtn" title="اشتراک‌گذاری">
+                    <i class="fas fa-share-nodes"></i>
+                </button>
             </div>
         </div>
-    </div>
-</div>
-<div id="notification" class="notification"><i class="fas fa-check-circle"></i><span></span></div>
 
-<script>
-    // ======================== SCHEDULE DATA ========================
-    function makeTask(id, title, start, end, category, location, desc = '') {
-        return { id, title, start, end, category, location, desc, duration: getDuration(start, end) };
-    }
-    function getDuration(start, end) {
-        let [sh, sm] = start.split(':').map(Number);
-        let [eh, em] = end.split(':').map(Number);
-        let diff = (eh * 60 + em) - (sh * 60 + sm);
-        let h = Math.floor(diff / 60), m = diff % 60;
-        if (h > 0 && m > 0) return `${h}ساعت ${m}دقیقه`;
-        if (h > 0) return `${h}ساعت`;
-        return `${m}دقیقه`;
-    }
+        <!-- Day Selector -->
+        <div class="day-selector" id="daySelector"></div>
 
-    const scheduleDB = {};
-
-    // شنبه (6)
-    scheduleDB[6] = [
-        makeTask(1, 'نماز صبح (جماعت)', '04:50', '05:40', 'عبادی', 'مسجد', 'بیداری و حضور'),
-        makeTask(2, 'حفظ و مراجعه قرآن', '05:40', '06:30', 'عبادی', 'سحر', 'تمرکز بالا در سحر'),
-        makeTask(3, 'علوم شریعت ۱ (نحو)', '06:30', '07:10', 'درسی', 'واحد', 'درس ضبط شده'),
-        makeTask(4, 'صبحانه + ورزش سبک', '07:10', '08:00', 'شخصی', 'سلف', ''),
-        makeTask(5, 'مطالعه آزاد', '08:00', '09:00', 'درسی', '-', 'غیر درسی'),
-        makeTask(6, 'وقت طلایی یوتیوب', '09:00', '11:30', 'محتوا', 'یوتیوب', 'ضبط و ادیت'),
-        makeTask(7, 'درس قرائت در مسجد', '12:30', '13:30', 'عبادی', 'مسجد', 'بعد از نماز ظهر'),
-        makeTask(8, 'واحد ۲ شریعت + تکرار دروس + استراحت', '14:00', '18:30', 'درسی', '-', ''),
-        makeTask(9, 'کلاس عربی آنلاین', '18:30', '19:30', 'درسی', 'آنلاین', ''),
-        makeTask(10, 'تکرار دروس و آماده‌سازی هفته جدید', '20:00', '22:00', 'درسی', '-', 'شب')
-    ];
-
-    // یکشنبه (0)
-    scheduleDB[0] = [
-        makeTask(1, 'نماز صبح', '04:30', '05:00', 'عبادی', 'مسجد', ''),
-        makeTask(2, 'حفظ و مراجعه قرآن', '05:40', '06:30', 'عبادی', 'سحر', ''),
-        makeTask(3, 'شریعت ۱ (سیرت)', '06:30', '07:10', 'درسی', 'واحد', ''),
-        makeTask(4, 'صبحانه + ورزش سبک', '07:10', '08:00', 'شخصی', 'سلف', ''),
-        makeTask(5, 'مطالعه آزاد', '08:00', '09:00', 'درسی', '-', ''),
-        makeTask(6, 'مرور عمیق حقوق', '09:00', '10:30', 'درسی', '-', ''),
-        makeTask(7, 'ضبط محتوای کانال دوم', '10:30', '11:30', 'محتوا', 'یوتیوب', ''),
-        makeTask(8, 'نماز ظهر (جماعت)', '11:30', '12:30', 'عبادی', 'مسجد', ''),
-        makeTask(9, 'ناهار', '12:30', '13:15', 'شخصی', 'سلف', ''),
-        makeTask(10, 'شریعت ۲ (حدیث)', '13:15', '14:00', 'درسی', 'واحد', ''),
-        makeTask(11, 'خواب قیلوله', '14:00', '15:00', 'شخصی', '-', ''),
-        makeTask(12, 'نماز عصر (جماعت)', '15:00', '15:30', 'عبادی', 'مسجد', ''),
-        makeTask(13, 'کلاس منهجیة البحث', '15:10', '17:20', 'درسی', 'دانشگاه', ''),
-        makeTask(14, 'نماز مغرب + تفریح', '17:20', '18:30', 'عبادی', 'خوابگاه', ''),
-        makeTask(15, 'درس عربی آنلاین', '18:30', '19:30', 'درسی', 'آنلاین', ''),
-        makeTask(16, 'نماز عشاء + شام', '19:30', '21:00', 'عبادی', 'سلف', ''),
-        makeTask(17, 'شریعت ۳ (فقه)', '21:00', '21:40', 'درسی', 'واحد', ''),
-        makeTask(18, 'تکرار دروس و ادیت', '21:40', '22:40', 'درسی', '-', ''),
-        makeTask(19, 'مطالعه آزاد', '22:40', '23:15', 'درسی', '-', '')
-    ];
-
-    // دوشنبه (1)
-    scheduleDB[1] = [
-        makeTask(1, 'نماز صبح', '04:30', '05:00', 'عبادی', 'مسجد', ''),
-        makeTask(2, 'حفظ و مراجعه قرآن', '05:00', '06:30', 'عبادی', 'سحر', ''),
-        makeTask(3, 'شریعت ۱ (عربی)', '06:30', '07:10', 'درسی', 'واحد', ''),
-        makeTask(4, 'ورزش', '07:10', '07:50', 'شخصی', 'محوطه', ''),
-        makeTask(5, 'صبحانه', '07:50', '08:20', 'شخصی', 'سلف', ''),
-        makeTask(6, 'مطالعه آزاد', '08:10', '09:00', 'درسی', '-', ''),
-        makeTask(7, 'حقوق انسان و احکام التزام', '09:00', '12:50', 'درسی', 'دانشگاه', ''),
-        makeTask(8, 'نماز ظهر', '12:50', '13:30', 'عبادی', 'مسجد', ''),
-        makeTask(9, 'ناهار', '13:30', '14:15', 'شخصی', 'سلف', ''),
-        makeTask(10, 'شریعت ۲ (تفسیر)', '14:15', '15:00', 'درسی', 'واحد', ''),
-        makeTask(11, 'نماز عصر', '15:00', '15:30', 'عبادی', 'مسجد', ''),
-        makeTask(12, 'محتوای اینستاگرام / فیسبوک', '15:30', '16:30', 'محتوا', '-', ''),
-        makeTask(13, 'قانون اداری', '16:30', '18:30', 'درسی', 'دانشگاه', ''),
-        makeTask(14, 'درس عربی آنلاین', '18:30', '19:30', 'درسی', 'آنلاین', ''),
-        makeTask(15, 'جلسه قرائت مسجد', '19:30', '19:50', 'عبادی', 'مسجد', ''),
-        makeTask(16, 'غذای شب', '19:50', '20:30', 'شخصی', 'سلف', ''),
-        makeTask(17, 'شریعت ۳ (عقیده)', '20:30', '21:10', 'درسی', 'واحد', ''),
-        makeTask(18, 'مسواک', '21:10', '21:20', 'شخصی', '-', ''),
-        makeTask(19, 'استراحت', '21:30', '04:20', 'شخصی', '-', 'خواب')
-    ];
-
-    // سه‌شنبه (2)
-    scheduleDB[2] = [
-        makeTask(1, 'نماز صبح (جماعت)', '04:50', '05:40', 'عبادی', 'مسجد', ''),
-        makeTask(2, 'حفظ و مراجعه قرآن', '05:40', '06:30', 'عبادی', 'سحر', ''),
-        makeTask(3, 'شریعت ۱ (تربیت اسلامی)', '06:30', '07:10', 'درسی', 'واحد', ''),
-        makeTask(4, 'صبحانه + ورزش سبک', '07:10', '08:00', 'شخصی', 'سلف', ''),
-        makeTask(5, 'مطالعه آزاد', '08:00', '09:00', 'درسی', '-', ''),
-        makeTask(6, 'مرور عمیق حقوق', '09:00', '10:30', 'درسی', '-', ''),
-        makeTask(7, 'ضبط محتوای کانال دوم', '10:30', '11:30', 'محتوا', 'یوتیوب', ''),
-        makeTask(8, 'نماز ظهر (جماعت)', '11:30', '12:30', 'عبادی', 'مسجد', ''),
-        makeTask(9, 'ناهار', '12:30', '13:15', 'شخصی', 'سلف', ''),
-        makeTask(10, 'شریعت ۲ (حدیث)', '13:15', '14:00', 'درسی', 'واحد', ''),
-        makeTask(11, 'خواب قیلوله', '14:00', '15:00', 'شخصی', '-', ''),
-        makeTask(12, 'نماز عصر (جماعت)', '15:00', '15:30', 'عبادی', 'مسجد', ''),
-        makeTask(13, 'کلاس منهجیة البحث', '15:10', '17:20', 'درسی', 'دانشگاه', ''),
-        makeTask(14, 'نماز مغرب + تفریح', '17:20', '18:30', 'عبادی', 'خوابگاه', ''),
-        makeTask(15, 'درس عربی آنلاین', '18:30', '19:30', 'درسی', 'آنلاین', ''),
-        makeTask(16, 'نماز عشاء + شام', '19:30', '21:00', 'عبادی', 'سلف', ''),
-        makeTask(17, 'شریعت ۳ (فقه)', '21:00', '21:40', 'درسی', 'واحد', ''),
-        makeTask(18, 'تکرار دروس و ادیت', '21:40', '22:40', 'درسی', '-', ''),
-        makeTask(19, 'مطالعه آزاد', '22:40', '23:15', 'درسی', '-', '')
-    ];
-
-    // چهارشنبه (3)
-    scheduleDB[3] = [
-        makeTask(1, 'نماز صبح', '04:30', '05:00', 'عبادی', 'مسجد', ''),
-        makeTask(2, 'حفظ و مراجعه قرآن', '05:00', '06:30', 'عبادی', 'سحر', ''),
-        makeTask(3, 'شریعت ۱ (عربی)', '06:30', '07:10', 'درسی', 'واحد', ''),
-        makeTask(4, 'ورزش', '07:10', '07:50', 'شخصی', 'محوطه', ''),
-        makeTask(5, 'صبحانه', '07:50', '08:20', 'شخصی', 'سلف', ''),
-        makeTask(6, 'مطالعه آزاد', '08:10', '09:00', 'درسی', '-', ''),
-        makeTask(7, 'حقوق انسان و احکام التزام', '09:00', '12:50', 'درسی', 'دانشگاه', ''),
-        makeTask(8, 'نماز ظهر', '12:50', '13:30', 'عبادی', 'مسجد', ''),
-        makeTask(9, 'ناهار', '13:30', '14:15', 'شخصی', 'سلف', ''),
-        makeTask(10, 'شریعت ۲ (سیرت)', '14:15', '15:00', 'درسی', 'واحد', ''),
-        makeTask(11, 'نماز عصر', '15:00', '15:30', 'عبادی', 'مسجد', ''),
-        makeTask(12, 'محتوای اینستاگرام / فیسبوک', '15:30', '16:30', 'محتوا', '-', ''),
-        makeTask(13, 'قانون اداری', '16:30', '18:30', 'درسی', 'دانشگاه', ''),
-        makeTask(14, 'درس عربی آنلاین', '18:30', '19:30', 'درسی', 'آنلاین', ''),
-        makeTask(15, 'جلسه قرائت مسجد', '19:30', '19:50', 'عبادی', 'مسجد', ''),
-        makeTask(16, 'غذای شب', '19:50', '20:30', 'شخصی', 'سلف', ''),
-        makeTask(17, 'شریعت ۳ (عقیده)', '20:30', '21:10', 'درسی', 'واحد', ''),
-        makeTask(18, 'مسواک', '21:10', '21:20', 'شخصی', '-', ''),
-        makeTask(19, 'استراحت', '21:30', '04:20', 'شخصی', '-', '')
-    ];
-
-    // پنجشنبه (4)
-    scheduleDB[4] = [
-        makeTask(1, 'ادیت و انتشار ویدیوها', '09:00', '11:00', 'محتوا', '-', 'یوتیوب/اینستاگرام'),
-        makeTask(2, 'شریعت ۱ (تفسیر)', '11:00', '12:00', 'درسی', 'واحد', ''),
-        makeTask(3, 'نماز ظهر و ناهار سریع', '12:00', '13:00', 'عبادی', 'مسجد/سلف', ''),
-        makeTask(4, 'کلاس قانون تامین', '13:40', '17:20', 'درسی', 'دانشگاه', ''),
-        makeTask(5, 'شریعت ۲ (تربیت اسلامی) و شریعت ۳ (فقه)', '18:00', '20:00', 'درسی', 'واحد', ''),
-        makeTask(6, 'تفریح آزاد', '20:00', '23:00', 'شخصی', '-', '')
-    ];
-
-    // جمعه (5)
-    scheduleDB[5] = [
-        makeTask(1, 'نماز صبح + حفظ قرآن', '04:50', '06:00', 'عبادی', 'مسجد/سحر', 'سپس استراحت تا ۸:۳۰'),
-        makeTask(2, 'ورزش سنگین‌تر یا تفریح خارج', '09:00', '10:30', 'شخصی', 'خارج', ''),
-        makeTask(3, 'غسل جمعه و مطالعه آزاد', '10:30', '11:30', 'عبادی', '-', 'کتب غیر درسی'),
-        makeTask(4, 'نماز جمعه و ناهار', '11:30', '13:30', 'عبادی', 'مسجد/سلف', ''),
-        makeTask(5, 'استراحت و خواب ظهر', '14:00', '17:00', 'شخصی', '-', ''),
-        makeTask(6, 'تفریح و ارتباطات', '17:00', '20:00', 'شخصی', '-', 'خانواده و دوستان'),
-        makeTask(7, 'جمع‌بندی هفته و چیدمان هفته بعد', '20:00', '22:00', 'درسی', '-', 'برنامه‌ریزی')
-    ];
-
-    // ======================== STATE ========================
-    let currentDay = new Date().getDay();
-    let currentFilter = 'pending';
-    let completedMap = JSON.parse(localStorage.getItem('smartProgress')) || {};
-
-    function getDayKey(day) { return `day_${day}`; }
-    function isCompleted(day, taskId) { return completedMap[getDayKey(day)]?.includes(taskId) || false; }
-    function setCompleted(day, taskId, completed) {
-        let key = getDayKey(day);
-        if (!completedMap[key]) completedMap[key] = [];
-        if (completed && !completedMap[key].includes(taskId)) completedMap[key].push(taskId);
-        else if (!completed && completedMap[key].includes(taskId)) completedMap[key] = completedMap[key].filter(id => id !== taskId);
-        localStorage.setItem('smartProgress', JSON.stringify(completedMap));
-    }
-
-    function getTasksForDay(day) {
-        let tasks = scheduleDB[day] || [];
-        return tasks.map(t => ({ ...t, completed: isCompleted(day, t.id) }));
-    }
-
-    function getNextPendingTask(tasks) {
-        return tasks.find(t => !t.completed);
-    }
-
-    function renderTasks() {
-        let tasks = getTasksForDay(currentDay);
-        let filtered = tasks;
-        if (currentFilter === 'completed') filtered = tasks.filter(t => t.completed);
-        else if (currentFilter === 'pending') filtered = tasks.filter(t => !t.completed);
-
-        let container = document.getElementById('taskListContainer');
-        if (!filtered.length) {
-            container.innerHTML = `<div class="empty-state"><i class="fas fa-calendar-week fa-2x"></i><h3 style="margin-top:0.8rem">هیچ کاری یافت نشد</h3></div>`;
-            document.getElementById('taskCount').innerText = '۰ کار';
-            return;
-        }
-        let nextId = getNextPendingTask(tasks)?.id;
-        let html = '';
-        filtered.forEach(task => {
-            let isNext = (!task.completed && task.id === nextId);
-            let completedClass = task.completed ? 'completed' : '';
-            let priorityClass = isNext ? 'next-priority' : '';
-            html += `
-                <div class="task-item ${completedClass} ${priorityClass}" data-id="${task.id}">
-                    <div class="task-info-grid">
-                        <div class="task-title">${task.title}</div>
-                        <div class="time-display">
-                            <span class="time-range">${task.start} - ${task.end}</span>
-                            <span class="duration">(${task.duration})</span>
-                        </div>
-                        ${task.desc ? `<div class="task-desc"><i class="fas fa-info-circle"></i> ${task.desc}</div>` : ''}
+        <!-- Tasks Panel -->
+        <div class="tasks-panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <div class="panel-title-icon">
+                        <i class="fas fa-list-check"></i>
                     </div>
-                    <div class="task-check-btn">
-                        <button class="check-button ${task.completed ? 'completed-btn' : ''}" data-id="${task.id}">
-                            <i class="fas ${task.completed ? 'fa-check-circle' : 'fa-circle'}"></i>
-                            ${task.completed ? 'انجام شده' : 'انجام نشده'}
-                        </button>
+                    <h2>برنامه امروز</h2>
+                    <span class="task-count" id="taskCount">۰ کار</span>
+                </div>
+                <div class="filter-group">
+                    <button class="filter-btn" data-filter="all">
+                        <i class="fas fa-layer-group"></i>
+                        <span>همه</span>
+                    </button>
+                    <button class="filter-btn active" data-filter="pending">
+                        <i class="fas fa-clock"></i>
+                        <span>جاری</span>
+                    </button>
+                    <button class="filter-btn" data-filter="completed">
+                        <i class="fas fa-circle-check"></i>
+                        <span>انجام‌شده</span>
+                    </button>
+                </div>
+            </div>
+            <div id="taskListContainer" class="task-list"></div>
+        </div>
+
+        <!-- Stats Footer -->
+        <div class="stats-footer">
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-simple"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-label">پیشرفت امروز</div>
+                    <div class="stat-value" id="progressPercent">0%</div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-fill" id="percentFill"></div>
                     </div>
                 </div>
-            `;
-        });
-        container.innerHTML = html;
-        document.getElementById('taskCount').innerText = filtered.length + ' کار';
-        document.querySelectorAll('.check-button').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                let taskId = parseInt(btn.dataset.id);
-                let tasksNow = getTasksForDay(currentDay);
-                let target = tasksNow.find(t => t.id === taskId);
-                if (target && !target.completed) {
-                    setCompleted(currentDay, taskId, true);
-                    showNotif('✅ انجام شد!');
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <i class="fas fa-circle-check fa-lg"></i>
+        <span></span>
+    </div>
+
+    <script>
+        // ======================== PARTICLES ========================
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 25; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 20) + 's';
+                particle.style.background = `hsl(${Math.random() * 60 + 220}, 80%, 65%)`;
+                container.appendChild(particle);
+            }
+        }
+
+        // ======================== SCHEDULE DATA ========================
+        function makeTask(id, title, start, end, desc = '') {
+            return { id, title, start, end, desc, duration: getDuration(start, end) };
+        }
+        
+        function getDuration(start, end) {
+            let [sh, sm] = start.split(':').map(Number);
+            let [eh, em] = end.split(':').map(Number);
+            let diff = (eh * 60 + em) - (sh * 60 + sm);
+            if (diff < 0) diff += 24 * 60;
+            let h = Math.floor(diff / 60), m = diff % 60;
+            if (h > 0 && m > 0) return `${h}س ${m}د`;
+            if (h > 0) return `${h}ساعت`;
+            return `${m}دقیقه`;
+        }
+
+        const scheduleDB = {};
+
+        // شنبه (6)
+        scheduleDB[6] = [
+            makeTask(1, 'نماز صبح (جماعت)', '04:50', '05:40', 'بیداری و حضور'),
+            makeTask(2, 'حفظ و مراجعه قرآن', '05:40', '06:30', 'تمرکز بالا در سحر'),
+            makeTask(3, 'علوم شریعت ۱ (نحو)', '06:30', '07:10', 'درس ضبط شده'),
+            makeTask(4, 'صبحانه + ورزش سبک', '07:10', '08:00'),
+            makeTask(5, 'مطالعه آزاد', '08:00', '09:00', 'غیر درسی'),
+            makeTask(6, 'وقت طلایی یوتیوب', '09:00', '11:30', 'ضبط و ادیت'),
+            makeTask(7, 'درس قرائت در مسجد', '12:30', '13:30', 'بعد از نماز ظهر'),
+            makeTask(8, 'واحد ۲ شریعت + تکرار دروس + استراحت', '14:00', '18:30'),
+            makeTask(9, 'کلاس عربی آنلاین', '18:30', '19:30'),
+            makeTask(10, 'تکرار دروس و آماده‌سازی هفته جدید', '20:00', '22:00', 'شب')
+        ];
+
+        // یکشنبه (0)
+        scheduleDB[0] = [
+            makeTask(1, 'نماز صبح', '04:30', '05:00'),
+            makeTask(2, 'حفظ و مراجعه قرآن', '05:40', '06:30'),
+            makeTask(3, 'شریعت ۱ (سیرت)', '06:30', '07:10'),
+            makeTask(4, 'صبحانه + ورزش سبک', '07:10', '08:00'),
+            makeTask(5, 'مطالعه آزاد', '08:00', '09:00'),
+            makeTask(6, 'مرور عمیق حقوق', '09:00', '10:30'),
+            makeTask(7, 'ضبط محتوای کانال دوم', '10:30', '11:30'),
+            makeTask(8, 'نماز ظهر (جماعت)', '11:30', '12:30'),
+            makeTask(9, 'ناهار', '12:30', '13:15'),
+            makeTask(10, 'شریعت ۲ (حدیث)', '13:15', '14:00'),
+            makeTask(11, 'خواب قیلوله', '14:00', '15:00'),
+            makeTask(12, 'نماز عصر (جماعت)', '15:00', '15:30'),
+            makeTask(13, 'کلاس منهجیة البحث', '15:10', '17:20'),
+            makeTask(14, 'نماز مغرب + تفریح', '17:20', '18:30'),
+            makeTask(15, 'درس عربی آنلاین', '18:30', '19:30'),
+            makeTask(16, 'نماز عشاء + شام', '19:30', '21:00'),
+            makeTask(17, 'شریعت ۳ (فقه)', '21:00', '21:40'),
+            makeTask(18, 'تکرار دروس و ادیت', '21:40', '22:40'),
+            makeTask(19, 'مطالعه آزاد', '22:40', '23:15')
+        ];
+
+        // دوشنبه (1)
+        scheduleDB[1] = [
+            makeTask(1, 'نماز صبح', '04:30', '05:00'),
+            makeTask(2, 'حفظ و مراجعه قرآن', '05:00', '06:30'),
+            makeTask(3, 'شریعت ۱ (عربی)', '06:30', '07:10'),
+            makeTask(4, 'ورزش', '07:10', '07:50'),
+            makeTask(5, 'صبحانه', '07:50', '08:20'),
+            makeTask(6, 'مطالعه آزاد', '08:10', '09:00'),
+            makeTask(7, 'حقوق انسان و احکام التزام', '09:00', '12:50'),
+            makeTask(8, 'نماز ظهر', '12:50', '13:30'),
+            makeTask(9, 'ناهار', '13:30', '14:15'),
+            makeTask(10, 'شریعت ۲ (تفسیر)', '14:15', '15:00'),
+            makeTask(11, 'نماز عصر', '15:00', '15:30'),
+            makeTask(12, 'محتوای اینستاگرام / فیسبوک', '15:30', '16:30'),
+            makeTask(13, 'قانون اداری', '16:30', '18:30'),
+            makeTask(14, 'درس عربی آنلاین', '18:30', '19:30'),
+            makeTask(15, 'جلسه قرائت مسجد', '19:30', '19:50'),
+            makeTask(16, 'غذای شب', '19:50', '20:30'),
+            makeTask(17, 'شریعت ۳ (عقیده)', '20:30', '21:10'),
+            makeTask(18, 'مسواک', '21:10', '21:20'),
+            makeTask(19, 'استراحت', '21:30', '04:20', 'خواب')
+        ];
+
+        // سه‌شنبه (2) - مشابه یکشنبه
+        scheduleDB[2] = scheduleDB[0].map(t => ({...t, id: t.id + 100}));
+        // چهارشنبه (3) - مشابه دوشنبه
+        scheduleDB[3] = scheduleDB[1].map(t => ({...t, id: t.id + 200}));
+        
+        // پنجشنبه (4)
+        scheduleDB[4] = [
+            makeTask(1, 'ادیت و انتشار ویدیوها', '09:00', '11:00', 'یوتیوب/اینستاگرام'),
+            makeTask(2, 'شریعت ۱ (تفسیر)', '11:00', '12:00'),
+            makeTask(3, 'نماز ظهر و ناهار سریع', '12:00', '13:00'),
+            makeTask(4, 'کلاس قانون تامین', '13:40', '17:20'),
+            makeTask(5, 'شریعت ۲ (تربیت اسلامی) و شریعت ۳ (فقه)', '18:00', '20:00'),
+            makeTask(6, 'تفریح آزاد', '20:00', '23:00')
+        ];
+
+        // جمعه (5)
+        scheduleDB[5] = [
+            makeTask(1, 'نماز صبح + حفظ قرآن', '04:50', '06:00', 'سپس استراحت تا ۸:۳۰'),
+            makeTask(2, 'ورزش سنگین‌تر یا تفریح خارج', '09:00', '10:30'),
+            makeTask(3, 'غسل جمعه و مطالعه آزاد', '10:30', '11:30', 'کتب غیر درسی'),
+            makeTask(4, 'نماز جمعه و ناهار', '11:30', '13:30'),
+            makeTask(5, 'استراحت و خواب ظهر', '14:00', '17:00'),
+            makeTask(6, 'تفریح و ارتباطات', '17:00', '20:00', 'خانواده و دوستان'),
+            makeTask(7, 'جمع‌بندی هفته و چیدمان هفته بعد', '20:00', '22:00', 'برنامه‌ریزی')
+        ];
+
+        // ======================== STATE ========================
+        let currentDay = new Date().getDay();
+        let currentFilter = 'pending';
+        let completedMap = JSON.parse(localStorage.getItem('smartProgress_v2')) || {};
+
+        function getDayKey(day) { return `day_${day}`; }
+        function isCompleted(day, taskId) { return completedMap[getDayKey(day)]?.includes(taskId) || false; }
+        
+        function setCompleted(day, taskId, completed) {
+            let key = getDayKey(day);
+            if (!completedMap[key]) completedMap[key] = [];
+            if (completed && !completedMap[key].includes(taskId)) {
+                completedMap[key].push(taskId);
+            } else if (!completed && completedMap[key].includes(taskId)) {
+                completedMap[key] = completedMap[key].filter(id => id !== taskId);
+            }
+            localStorage.setItem('smartProgress_v2', JSON.stringify(completedMap));
+        }
+
+        function getTasksForDay(day) {
+            let tasks = scheduleDB[day] || [];
+            return tasks.map(t => ({ ...t, completed: isCompleted(day, t.id) }));
+        }
+
+        function getNextPendingTask(tasks) {
+            return tasks.find(t => !t.completed);
+        }
+
+        function renderTasks() {
+            let tasks = getTasksForDay(currentDay);
+            let filtered = tasks;
+            
+            if (currentFilter === 'completed') {
+                filtered = tasks.filter(t => t.completed);
+            } else if (currentFilter === 'pending') {
+                filtered = tasks.filter(t => !t.completed);
+            }
+
+            let container = document.getElementById('taskListContainer');
+            
+            if (!filtered.length) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-clipboard-check"></i>
+                        </div>
+                        <h3>هیچ کاری یافت نشد</h3>
+                        <p>فیلتر فعلی را تغییر دهید یا کار جدیدی اضافه کنید</p>
+                    </div>
+                `;
+                document.getElementById('taskCount').innerText = '۰ کار';
+                return;
+            }
+            
+            let nextId = getNextPendingTask(tasks)?.id;
+            let html = '';
+            
+            filtered.forEach((task, index) => {
+                let isNext = (!task.completed && task.id === nextId);
+                let completedClass = task.completed ? 'completed' : '';
+                let priorityClass = isNext ? 'next-priority' : '';
+                let delay = index * 50;
+                
+                html += `
+                    <div class="task-item ${completedClass} ${priorityClass}" 
+                         data-id="${task.id}"
+                         style="animation-delay: ${delay}ms">
+                        
+                        <div class="task-info-grid">
+                            <div class="task-title">${task.title}</div>
+                            
+                            <div class="time-display">
+                                <i class="far fa-clock time-icon"></i>
+                                <span class="time-range">${task.start} - ${task.end}</span>
+                                <span class="duration">${task.duration}</span>
+                            </div>
+                            
+                            ${task.desc ? 
+                                `<div class="task-desc">
+                                    <i class="fas fa-lightbulb desc-icon"></i>
+                                    <span>${task.desc}</span>
+                                </div>` : ''}
+                        </div>
+                        
+                        <div class="task-check-btn">
+                            <button class="check-button ${task.completed ? 'completed-btn' : ''}" 
+                                    data-id="${task.id}">
+                                <i class="fas ${task.completed ? 'fa-circle-check' : 'fa-circle'}"></i>
+                                <span>${task.completed ? 'انجام شد' : 'علامت‌زدن'}</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            document.getElementById('taskCount').innerText = filtered.length + ' کار';
+            
+            document.querySelectorAll('.check-button').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    let taskId = parseInt(btn.dataset.id);
+                    let tasksNow = getTasksForDay(currentDay);
+                    let target = tasksNow.find(t => t.id === taskId);
+                    
+                    if (target && !target.completed) {
+                        setCompleted(currentDay, taskId, true);
+                        showNotif('کار با موفقیت انجام شد', 'success');
+                        renderTasks();
+                        updateStats();
+                    } else if (target && target.completed) {
+                        showNotif('این کار قبلاً انجام شده است', 'info');
+                    }
+                });
+            });
+        }
+
+        function updateStats() {
+            let tasks = getTasksForDay(currentDay);
+            let total = tasks.length;
+            let completed = tasks.filter(t => t.completed).length;
+            let percent = total ? Math.round((completed / total) * 100) : 0;
+            
+            document.getElementById('progressPercent').innerText = percent + '%';
+            document.getElementById('percentFill').style.width = percent + '%';
+            animateValue('progressPercent', parseInt(document.getElementById('progressPercent').innerText), percent, 800);
+        }
+        
+        function animateValue(id, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const value = Math.floor(progress * (end - start) + start);
+                document.getElementById(id).innerText = value + '%';
+                if (progress < 1) window.requestAnimationFrame(step);
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        function updateDateHeader() {
+            const now = new Date();
+            const dayNames = ['یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه', 'شنبه'];
+            const weekday = dayNames[now.getDay()];
+            const months = ['ژانویه', 'فوریه', 'مارس', 'آپریل', 'مه', 'ژوئن', 'ژوئیه', 'اوت', 'سپتامبر', 'اکتبر', 'نوامبر', 'دسامبر'];
+            const day = now.getDate();
+            const month = months[now.getMonth()];
+            const year = now.getFullYear();
+            document.getElementById('gregDate').innerText = `${weekday} ${day} ${month} ${year}`;
+        }
+
+        function buildDaySelector() {
+            const days = ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه'];
+            const order = [6, 0, 1, 2, 3, 4, 5];
+            const container = document.getElementById('daySelector');
+            container.innerHTML = '';
+            
+            order.forEach((dayIdx, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'day-btn';
+                if (currentDay === dayIdx) btn.classList.add('active');
+                btn.innerHTML = `<i class="far fa-calendar"></i><span>${days[idx]}</span>`;
+                btn.dataset.day = dayIdx;
+                
+                btn.addEventListener('click', () => {
+                    currentDay = dayIdx;
+                    document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
                     renderTasks();
                     updateStats();
-                } else if (target && target.completed) {
-                    showNotif('این کار قبلاً انجام شده است', 'info');
-                }
+                });
+                
+                container.appendChild(btn);
             });
-        });
-    }
+            
+            const todayIdx = new Date().getDay();
+            const todayBtn = document.querySelector(`.day-btn[data-day="${todayIdx}"]`);
+            if (todayBtn) todayBtn.classList.add('today');
+        }
 
-    function updateStats() {
-        let tasks = getTasksForDay(currentDay);
-        let total = tasks.length;
-        let completed = tasks.filter(t => t.completed).length;
-        let percent = total ? Math.round((completed / total) * 100) : 0;
-        document.getElementById('progressPercent').innerText = percent + '%';
-        document.getElementById('percentFill').style.width = percent + '%';
-    }
+        function showNotif(msg, type = 'success') {
+            const notif = document.getElementById('notification');
+            const icon = notif.querySelector('i');
+            
+            if (type === 'info') {
+                notif.style.background = 'linear-gradient(135deg, #3b82f6, #2563eb)';
+                icon.className = 'fas fa-info-circle fa-lg';
+            } else {
+                notif.style.background = 'linear-gradient(135deg, var(--primary), var(--primary-dark))';
+                icon.className = 'fas fa-circle-check fa-lg';
+            }
+            
+            notif.querySelector('span').innerText = msg;
+            notif.classList.add('show');
+            setTimeout(() => notif.classList.remove('show'), 2500);
+        }
 
-    function updateDateHeader() {
-        const now = new Date();
-        const dayNames = ['یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه', 'شنبه'];
-        const weekday = dayNames[now.getDay()];
-        const months = ['ژانویه', 'فوریه', 'مارس', 'آپریل', 'مه', 'ژوئن', 'ژوئیه', 'اوت', 'سپتامبر', 'اکتبر', 'نوامبر', 'دسامبر'];
-        const day = now.getDate();
-        const month = months[now.getMonth()];
-        const year = now.getFullYear();
-        document.getElementById('gregDate').innerText = `${weekday} ${day} ${month} ${year}`;
-    }
-
-    function buildDaySelector() {
-        const days = ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه'];
-        const order = [6, 0, 1, 2, 3, 4, 5];
-        const container = document.getElementById('daySelector');
-        container.innerHTML = '';
-        order.forEach((dayIdx, idx) => {
-            const btn = document.createElement('button');
-            btn.className = 'day-btn';
-            if (currentDay === dayIdx) btn.classList.add('active');
-            btn.innerText = days[idx];
-            btn.dataset.day = dayIdx;
-            btn.addEventListener('click', () => {
-                currentDay = dayIdx;
-                document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
+        function resetToday() {
+            if (confirm('آیا مطمئن هستید؟ تمام کارهای امروز بازنشانی می‌شوند.')) {
+                const key = getDayKey(currentDay);
+                completedMap[key] = [];
+                localStorage.setItem('smartProgress_v2', JSON.stringify(completedMap));
                 renderTasks();
                 updateStats();
+                showNotif('امروز بازنشانی شد', 'success');
+            }
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            const newTheme = current === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            const icon = document.querySelector('#themeToggle i');
+            icon.className = newTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+            
+            showNotif(newTheme === 'dark' ? 'تم تاریک فعال شد' : 'تم روشن فعال شد', 'info');
+        }
+
+        function loadTheme() {
+            const saved = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', saved);
+            const icon = document.querySelector('#themeToggle i');
+            icon.className = saved === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+        }
+
+        function generateManifest() {
+            const manifest = {
+                name: "برنامه هفتگی هوشمند",
+                short_name: "برنامه",
+                start_url: ".",
+                display: "standalone",
+                theme_color: "#6366f1",
+                background_color: "#0a0c15",
+                icons: [{
+                    src: "image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%236366f1'/%3E%3C/svg%3E",
+                    sizes: "any",
+                    type: "image/svg+xml"
+                }]
+            };
+            const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
+            const manifestURL = URL.createObjectURL(manifestBlob);
+            document.querySelector('#manifest-placeholder').setAttribute('href', manifestURL);
+        }
+
+        function setupShare() {
+            document.getElementById('shareBtn')?.addEventListener('click', async () => {
+                const dayNames = ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه'];
+                const tasks = getTasksForDay(currentDay);
+                const completed = tasks.filter(t => t.completed).length;
+                
+                const text = `برنامه ${dayNames[currentDay]}\n${completed}/${tasks.length} کار انجام شد\nبرنامه هفتگی هوشمند`;
+                
+                if (navigator.share) {
+                    try {
+                        await navigator.share({ title: 'برنامه هفتگی', text });
+                    } catch (err) { console.log('Share cancelled'); }
+                } else {
+                    navigator.clipboard.writeText(text);
+                    showNotif('متن کپی شد', 'info');
+                }
             });
-            container.appendChild(btn);
-        });
-        const todayIdx = new Date().getDay();
-        const todayBtn = document.querySelector(`.day-btn[data-day="${todayIdx}"]`);
-        if (todayBtn) todayBtn.classList.add('today');
-    }
+        }
 
-    function showNotif(msg) {
-        const notif = document.getElementById('notification');
-        notif.querySelector('span').innerText = msg;
-        notif.classList.add('show');
-        setTimeout(() => notif.classList.remove('show'), 2000);
-    }
-
-    function resetToday() {
-        if (confirm('بازنشانی تمام کارهای امروز؟')) {
-            const key = getDayKey(currentDay);
-            completedMap[key] = [];
-            localStorage.setItem('smartProgress', JSON.stringify(completedMap));
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            updateDateHeader();
+            buildDaySelector();
             renderTasks();
             updateStats();
-            showNotif('امروز بازنشانی شد');
-        }
-    }
-
-    function toggleTheme() {
-        const html = document.documentElement;
-        const current = html.getAttribute('data-theme');
-        const newTheme = current === 'light' ? 'dark' : 'light';
-        html.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        const icon = document.querySelector('#themeToggle i');
-        icon.className = newTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
-    }
-
-    function loadTheme() {
-        const saved = localStorage.getItem('theme') || 'dark';
-        document.documentElement.setAttribute('data-theme', saved);
-        const icon = document.querySelector('#themeToggle i');
-        icon.className = saved === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
-    }
-
-    // PWA manifest and service worker
-    function generateManifest() {
-        const manifest = {
-            name: "برنامه هفتگی",
-            short_name: "برنامه",
-            start_url: ".",
-            display: "standalone",
-            theme_color: "#6366f1",
-            background_color: "#0a0c15",
-            icons: [
-                {
-                    src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%236366f1'/%3E%3Ctext x='50' y='67' font-size='48' text-anchor='middle' fill='white' font-family='monospace'%3E📅%3C/text%3E%3C/svg%3E",
-                    sizes: "any",
-                    type: "image/svg+xml",
-                    purpose: "any maskable"
+            loadTheme();
+            generateManifest();
+            setupShare();
+            
+            document.getElementById('resetTodayBtn').addEventListener('click', resetToday);
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+            
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    renderTasks();
+                });
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 't' && (e.ctrlKey || e.metaKey)) {
+                    e.preventDefault();
+                    toggleTheme();
                 }
-            ]
-        };
-        const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
-        const manifestURL = URL.createObjectURL(manifestBlob);
-        document.querySelector('#manifest-placeholder').setAttribute('href', manifestURL);
-    }
-
-    function installServiceWorker() {
-        if ('serviceWorker' in navigator) {
-            const swCode = `
-                const CACHE_NAME = 'weekly-planner-v3';
-                const urlsToCache = [
-                    './',
-                    '${window.location.pathname}',
-                    'https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800&family=Amiri:wght@400;700&display=swap',
-                    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
-                ];
-                self.addEventListener('install', event => {
-                    event.waitUntil(
-                        caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
-                    );
-                });
-                self.addEventListener('fetch', event => {
-                    event.respondWith(
-                        caches.match(event.request).then(response => response || fetch(event.request))
-                    );
-                });
-                self.addEventListener('activate', event => {
-                    event.waitUntil(
-                        caches.keys().then(keys => Promise.all(
-                            keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
-                        ))
-                    );
-                });
-            `;
-            const blob = new Blob([swCode], {type: 'application/javascript'});
-            const url = URL.createObjectURL(blob);
-            navigator.serviceWorker.register(url).catch(console.log);
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        updateDateHeader();
-        buildDaySelector();
-        renderTasks();
-        updateStats();
-        loadTheme();
-        document.getElementById('resetTodayBtn').addEventListener('click', resetToday);
-        document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentFilter = btn.dataset.filter;
-                renderTasks();
             });
         });
-        generateManifest();
-        installServiceWorker();
-    });
-</script>
+    </script>
 </body>
 </html>
